@@ -28,24 +28,24 @@ const validateQuantityFormat = (quantity) => {
   }
 }
 
-const validateProductsInStock = (name, quantity, stock) => {
+const validateProductsInStock = (name, quantity, stock, promotion) => {
   if (!stock.checkProductExistence(name)) {
     throw new Error(ERROR_MESSAGES.NOT_EXIST);
   }
-  if (!stock.hasSufficientStock(name, quantity)) {
+  if (!stock.hasSufficientStock(name, quantity, promotion)) {
     throw new Error(ERROR_MESSAGES.QUANTITY_IS_OVER_STOCK);
   }
 }
 
-const validateProductsToPurchase = (productsToPurchase, stock) => {
+const validateProductsToPurchase = (productsToPurchase, stock, promotion) => {
   validateArrayFormat(productsToPurchase);
   const productsInfo = parser.extractProductsToPurchase(productsToPurchase);
   validateDuplicateProductsName(productsInfo);
+
   productsInfo.forEach(({ name, quantity }) => {
     validateQuantityFormat(quantity);
-    validateProductsInStock(name, quantity, stock);
+    validateProductsInStock(name, quantity, stock, promotion);
   });
-
   return productsInfo;
 }
 
