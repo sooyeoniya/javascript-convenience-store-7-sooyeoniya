@@ -28,6 +28,14 @@ class Promotion {
     return { name, buy, get, startDate, endDate };
   }
 
+  #isPromotionAvailable() {
+    const currentDate = new Date();
+    this.#promotionInfo.forEach((promotion) => {
+      const isPromotionAvailable = currentDate >= promotion.startDate && currentDate <= promotion.endDate;
+      promotion.isAvailable = isPromotionAvailable;
+    });
+  }
+
   #initPromotionInfo() {
     const promotionInfo = this.#readPromotionInfoFromFile();
 
@@ -35,6 +43,7 @@ class Promotion {
       const parsedPromotion = this.#parsePromotionInfo(promotion);
       if (parsedPromotion) this.#promotionInfo.push(parsedPromotion);
     });
+    this.#isPromotionAvailable();
   }
 }
 
