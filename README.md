@@ -29,7 +29,7 @@
   **상품 및 프로모션 정보 불러오기**
   - [x] `public/products.md` 파일 불러오기
     - `name`,`price`,`quantity`,`promotion`에 따라 파싱하여 저장
-  - [ ] `public/promotions.md` 파일 불러오기
+  - [x] `public/promotions.md` 파일 불러오기
     - `name`,`buy`,`get`,`start_date`,`end_date`에 따라 파싱하여 저장
 
   **재고 관리**

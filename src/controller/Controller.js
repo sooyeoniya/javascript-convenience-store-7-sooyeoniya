@@ -1,4 +1,5 @@
 import Stock from '../domain/Stock.js';
+import Promotion from '../domain/Promotion.js';
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import parser from '../utils/parser.js';
@@ -6,9 +7,11 @@ import validateProductsToPurchase from '../validations/validateProductsToPurchas
 
 class Controller {
   #stock;
+  #promotion;
 
   constructor() {
     this.#stock = new Stock();
+    this.#promotion = new Promotion();
   }
 
   async start() {
