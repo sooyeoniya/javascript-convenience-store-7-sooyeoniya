@@ -1,17 +1,20 @@
+import parser from '../utils/parser.js';
 import Stock from '../domain/Stock.js';
 import Promotion from '../domain/Promotion.js';
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
-import parser from '../utils/parser.js';
+import ConvenienceStoreService from '../service/ConvenienceStoreService.js';
 import validateProductsToPurchase from '../validations/validateProductsToPurchase.js';
 
 class Controller {
   #stock;
   #promotion;
+  #convenienceStoreService;
 
   constructor() {
     this.#stock = new Stock();
     this.#promotion = new Promotion();
+    this.#convenienceStoreService = new ConvenienceStoreService(this.#stock, this.#promotion);
   }
 
   async start() {
@@ -35,7 +38,7 @@ class Controller {
     try {
       const productsToPurchase = await InputView.readProductsInfoAsync();
       const parsedProductsToPurchase = parser.splitEachProduct(productsToPurchase);
-      return validateProductsToPurchase(parsedProductsToPurchase, this.#stock, this.#promotion);
+      return validateProductsToPurchase(parsedProductsToPurchase, this.#convenienceStoreService);
     } catch (error) {
       OutputView.printErrorMessage(error.message);
       return this.#validateInputAsync();
