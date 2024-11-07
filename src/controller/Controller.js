@@ -26,7 +26,7 @@ class Controller {
     try {
       const productsToPurchase = await InputView.readProductsInfoAsync();
       const parsedProductsToPurchase = parser.splitEachProduct(productsToPurchase);
-      return validateProductsToPurchase(parsedProductsToPurchase);
+      return validateProductsToPurchase(parsedProductsToPurchase, this.#stock);
     } catch (error) {
       OutputView.printErrorMessage(error.message);
       return this.#validateInputAsync();

@@ -11,6 +11,18 @@ class Stock {
     return this.#stockInfo;
   }
 
+  checkProductExistence(productName) {
+    return this.#stockInfo.some((product) => product.name === productName);
+  }
+
+  hasSufficientStock(productName, requestedQuantity) {
+    let totalQuantity = 0;
+    this.#stockInfo.forEach((product) => {
+      if (product.name === productName) totalQuantity += product.quantity;
+    });
+    return totalQuantity >= requestedQuantity;
+  }
+
   #readStockInfoFromFile() {
     const stockInfo = fs.readFileSync('public/products.md', 'utf-8').trim().split('\n');
     stockInfo.shift();
