@@ -27,7 +27,11 @@ const OutputView = {
 
     Console.print('====================================\n');
 
-  }
+  },
+
+  printErrorMessage(errorMessage) {
+    Console.print(errorMessage);
+  },
 }
 
 export default OutputView;
