@@ -1,8 +1,8 @@
-import Controller from './controller/Controller.js';
+import ConvenienceStoreController from './controller/ConvenienceStoreController.js';
 
 class App {
   async run() {
-    await new Controller().start();
+    await new ConvenienceStoreController().start();
   }
 }
 
