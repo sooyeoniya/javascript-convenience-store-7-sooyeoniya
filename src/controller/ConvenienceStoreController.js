@@ -18,6 +18,7 @@ class ConvenienceStoreController {
     const productsInfo = await this.#validateInputAsync();
     this.#convenienceStoreService.initProductsInfo(productsInfo);
     this.#convenienceStoreService.processProductPromotions();
+    this.#convenienceStoreService.processGeneralProduct();
   }
 
   async #validateInputAsync() {
