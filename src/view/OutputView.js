@@ -18,6 +18,7 @@ const OutputView = {
     Console.print(`- ${productInfo.name} ${priceText}원 ${quentityText} ${promotionText}`);
   },
 
+  // TODO: 함수 길이 10으로 줄이기
   printReceipt(receiptInfo) {
     Console.print('==============W 편의점================\n');
     Console.print('상품명             수량           금액');
