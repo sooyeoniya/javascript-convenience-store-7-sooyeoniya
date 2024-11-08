@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { MissionUtils } from '@woowacourse/mission-utils';
 
 class Promotion {
   #promotionInfo = [];
@@ -37,9 +38,7 @@ class Promotion {
 
   // 오늘 날짜 기준으로 프로모션 적용 기간인지 확인
   #isPromotionAvailable() {
-    // TODO: @woowacourse/mission-utils에서 제공하는 Console 및 DateTimes API를 사용하여 구현해야 한다.
-    // 현재 날짜와 시간을 가져오려면 DateTimes의 now()를 활용한다.
-    const currentDate = new Date();
+    const currentDate = MissionUtils.DateTimes.now();
     this.#promotionInfo.forEach((promotion) => {
       const isPromotionAvailable = currentDate >= promotion.startDate && currentDate <= promotion.endDate;
       promotion.isAvailable = isPromotionAvailable;
