@@ -20,6 +20,11 @@ class ConvenienceStoreService {
     this.#productsInfo = productsInfo;
   }
 
+  // 구매할 상품 및 수량 정보 반환
+  getProductsInfo() {
+    return this.#productsInfo;
+  }
+
   // 재고 정보 받아오기
   getStockInfo() {
     return this.#stock.getStockInfo();
@@ -64,9 +69,14 @@ class ConvenienceStoreService {
     const promotionBuyPlusGetValue = this.#promotion.getPromotionBuyPlusGetValue(promotionName);
     if (productQuantity % promotionBuyPlusGetValue === promotionBuyValue) {
       const renewProductQuantity = await this.#renewProductQuantity(productName, productQuantity, promotionGetValue);
-      // console.log(renewProductQuantity);
-      // TODO: renewProductQuantity 값을 productsInfo의 해당 productQuantity에 갱신
+      this.#updateProductQuantity(productName, renewProductQuantity);
     }
+  }
+
+  // 구매할 상품에 대한 수량 갱신
+  #updateProductQuantity(productName, renewProductQuantity) {
+    const product = this.#productsInfo.find((product) => product.name === productName);
+    product.quantity = renewProductQuantity;
   }
 
   // 안내 메시지 답변에 따른 구매할 수량 재계산
