@@ -12,6 +12,11 @@ class Stock {
     return this.#stockInfo;
   }
 
+  // 현재 상품에 대한 가격 반환
+  getProductPrice(productName) {
+    return this.#stockInfo.find((product) => product.name === productName).price;
+  }
+
   // 현재 상품에 대한 프로모션 재고 정보 반환
   getProductPromotionStockInfo(productName) {
     return this.#stockInfo.find((product) => product.name === productName && product.promotion !== null);

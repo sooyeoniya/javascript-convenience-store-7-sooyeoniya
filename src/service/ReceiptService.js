@@ -30,13 +30,11 @@ class ReceiptService {
   }
 
   #calculateItemCosts() {
-    // 각 상품별 구매액
-      // `{구매할 상품 개수} * {해당 상품 가격}`
-      // ConvenienceStoreService의 productsInfo에서 가져오기
-      // productsInfo (프로퍼티로 name, quantity, giftCount가 존재함)를 순회하며 다음 로직 처리
-      // stock의 stockInfo에서 productsInfo의 name과 일치하는 name에 대한 price 가져오기
-      // (productsInfo의 quantity) * (stockInfo의 price)
-      // 출력 : `${productsInfo의 name}  ${productsInfo의 quantity}  ${앞에서 계산한 값(toLocaleString적용)}`
+    this.#receiptInfo.items = this.#productManagementService.getProductsInfo();
+    this.#receiptInfo.items.forEach((item) => {
+      const price = this.#stock.getProductPrice(item.name);
+      item.itemTotalAmount = item.quantity * price;
+    });
   }
 
   #calculateTotalCosts() {
@@ -83,16 +81,3 @@ class ReceiptService {
 }
 
 export default ReceiptService;
-
-
-// ==============W 편의점================
-// 상품명		수량	금액
-// 콜라		3 	3,000
-// 에너지바 		5 	10,000
-// =============증	정===============
-// 콜라		1
-// ====================================
-// 총구매액		8	13,000
-// 행사할인			-1,000
-// 멤버십할인			-3,000
-// 내실돈			 9,000

@@ -23,7 +23,7 @@ const OutputView = {
     Console.print('상품명             수량           금액');
 
     receiptInfo.items.forEach((item) => {
-      Console.print(`${item.name}             ${item.quantity}             ${item.itemTotal}`);
+      Console.print(`${item.name}             ${item.quantity}             ${item.itemTotalAmount}`);
     });
 
     Console.print('==============증     정===============\n');
@@ -38,7 +38,6 @@ const OutputView = {
     Console.print(`행사할인             ${receiptInfo.eventDiscount}`);
     Console.print(`멤버십할인           ${receiptInfo.membershipDiscount}`);
     Console.print(`내실돈               ${receiptInfo.finalAmount}`);
-
   },
 
   printErrorMessage(errorMessage) {
