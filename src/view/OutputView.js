@@ -20,11 +20,24 @@ const OutputView = {
 
   printReceipt(receiptInfo) {
     Console.print('==============W 편의점================\n');
-    Console.print('상품명             수량             금액');
+    Console.print('상품명             수량           금액');
 
-    Console.print('=============증     정===============\n');
+    receiptInfo.items.forEach((item) => {
+      Console.print(`${item.name}             ${item.quantity}             ${item.itemTotal}`);
+    });
 
-    Console.print('====================================\n');
+    Console.print('==============증     정===============\n');
+    receiptInfo.items
+      .filter((item) => item.giftCount > 0)
+      .forEach((item) => {
+        Console.print(`${item.name}             ${item.giftCount}`);
+      });
+
+    Console.print('======================================\n');
+    Console.print(`총구매액             ${receiptInfo.totalQuantity}             ${receiptInfo.totalAmount}`);
+    Console.print(`행사할인             ${receiptInfo.eventDiscount}`);
+    Console.print(`멤버십할인           ${receiptInfo.membershipDiscount}`);
+    Console.print(`내실돈               ${receiptInfo.finalAmount}`);
 
   },
 
