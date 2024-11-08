@@ -12,7 +12,17 @@ class Stock {
     return this.#stockInfo;
   }
 
-  // 현재 상품에 대한 프로모션 이름
+  // 현재 상품에 대한 프로모션 재고 정보 반환
+  getProductPromotionStockInfo(productName) {
+    return this.#stockInfo.find((product) => product.name === productName && product.promotion !== null);
+  }
+
+  // 현재 상품에 대한 일반 재고 정보 반환
+  getProductGeneralStockInfo(productName) {
+    return this.#stockInfo.find((product) => product.name === productName && product.promotion === null);
+  }
+
+  // 현재 상품에 대한 프로모션 이름 (프로모션 혜택 있는 경우 프로모션 혜택 이름 먼저 반환, 없으면 null 반환)
   getPromotionName(productName) {
     return this.#stockInfo.find((product) => product.name === productName).promotion;
   }
@@ -21,7 +31,7 @@ class Stock {
   getPromotionStockQuantity(productName) {
     const promotionName = this.getPromotionName(productName);
     const product = this.#stockInfo.find((product) => 
-      product.name === productName && product.promotion === promotionName
+      product.name === productName && promotionName && product.promotion === promotionName
     );
     return product.quantity;
   }
@@ -32,6 +42,20 @@ class Stock {
       product.name === productName && product.promotion === null
     );
     return product.quantity;
+  }
+
+  // {프로모션 재고 수량} > {현재상품수량} 인 경우, 프로모션 재고 업데이트: {프로모션 재고 수량} - {현재상품수량}
+  // {프로모션 재고 수량} <= {현재상품수량} 인 경우, 프로모션 재고 우선 차감 후, 나머지 일반 재고 차감
+  updateStockInfo(productName, productQuantity) {
+    const productPromotionStockInfo = this.getProductPromotionStockInfo(productName);
+    const productGeneralStockInfo = this.getProductGeneralStockInfo(productName);
+    const promotionStockQuantity = productPromotionStockInfo.quantity;
+    if (promotionStockQuantity > productQuantity) {
+      productPromotionStockInfo.quantity -= productQuantity;
+    } else {
+      productPromotionStockInfo.quantity = 0;
+      productGeneralStockInfo.quantity -= (productQuantity - promotionStockQuantity);
+    }
   }
 
   // 파일 읽기

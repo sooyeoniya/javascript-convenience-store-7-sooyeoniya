@@ -15,7 +15,6 @@ const extractProductsToPurchase = (productsToPurchase) => {
 const parser = {
   splitEachProduct,
   extractProductsToPurchase,
-
 }
 
 export default parser;
