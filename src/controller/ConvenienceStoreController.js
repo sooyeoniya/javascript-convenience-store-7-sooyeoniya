@@ -3,12 +3,14 @@ import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import ConvenienceStoreService from '../service/ConvenienceStoreService.js';
 import validateProductsToPurchase from '../validations/validateProductsToPurchase.js';
+import validateConfirmationResponse from '../validations/validateConfirmationResponse.js';
 
 class ConvenienceStoreController {
   #convenienceStoreService;
 
   constructor() {
     this.#convenienceStoreService = new ConvenienceStoreService();
+    this.#convenienceStoreService.getUserConfirmation = this.getUserConfirmation.bind(this);
   }
 
   async start() {
@@ -17,8 +19,18 @@ class ConvenienceStoreController {
 
     const productsInfo = await this.#validateInputAsync();
     this.#convenienceStoreService.initProductsInfo(productsInfo);
-    this.#convenienceStoreService.processProductPromotions();
-    this.#convenienceStoreService.processGeneralProduct();
+    await this.#convenienceStoreService.processProductPromotions();
+    await this.#convenienceStoreService.processGeneralProduct();
+  }
+
+  async getUserConfirmation(message) {
+    try {
+      const userInput = await InputView.readUserConfirmation(message);
+      return validateConfirmationResponse(userInput);
+    } catch (error) {
+      OutputView.printErrorMessage(error.message);
+      return await this.getUserConfirmation(message);
+    }
   }
 
   async #validateInputAsync() {

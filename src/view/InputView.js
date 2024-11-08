@@ -14,6 +14,9 @@ const InputView = {
     return await readInput(INPUT_MESSAGES.PRODUCTS_INFO);
   },
 
+  async readUserConfirmation(message) {
+    return await readInput(message);
+  },
 }
 
 export default InputView;
