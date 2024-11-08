@@ -139,17 +139,18 @@ class ConvenienceStoreService {
 
   // 총 재고 수량 계산
   #calculateTotalQuantity(productName) {
-    let totalQuantity = 0;
     if (this.#isAvailablePromotion(productName)) {
-      this.#stock.getStockInfo().forEach((product) => {
-        if (product.name === productName) totalQuantity += product.quantity;
-      });
-      return totalQuantity;
+      return this.#sumProductQuantity((product) => product.name === productName);
     }
-    this.#stock.getStockInfo().forEach((product) => {
-      if (product.name === productName && product.promotion === null) totalQuantity += product.quantity;
-    });
-    return totalQuantity;
+    return this.#sumProductQuantity((product) => product.name === productName && product.promotion === null);
+  }
+
+  // 특정 조건에 대한 상품 수량 덧셈
+  #sumProductQuantity(condition) {
+    return this.#stock.getStockInfo().reduce((total, product) => {
+      if (condition(product)) total += product.quantity;
+      return total;
+    }, 0);
   }
 }
 
