@@ -58,6 +58,7 @@ class Stock {
     }
   }
 
+  // 프로모션 미적용 상품에 대한 일반 재고 차감
   updateGeneralStockInfo(productName, productQuantity) {
     const productGeneralStockInfo = this.getProductGeneralStockInfo(productName);
     productGeneralStockInfo.quantity -= productQuantity;
