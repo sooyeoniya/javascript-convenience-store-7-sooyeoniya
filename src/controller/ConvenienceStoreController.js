@@ -4,22 +4,22 @@ import parser from '../utils/parser.js';
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import ReceiptService from '../service/ReceiptService.js';
-import ConvenienceStoreService from '../service/ConvenienceStoreService.js';
+import ProductManagementService from '../service/ProductManagementService.js';
 import validateProductsToPurchase from '../validations/validateProductsToPurchase.js';
 import validateConfirmationResponse from '../validations/validateConfirmationResponse.js';
 
 class ConvenienceStoreController {
   #stock;
   #promotion;
-  #convenienceStoreService;
+  #productManagementService;
   #receiptService;
 
   constructor() {
     this.#stock = new Stock();
     this.#promotion = new Promotion();
-    this.#convenienceStoreService = new ConvenienceStoreService(this.#stock, this.#promotion);
-    this.#convenienceStoreService.getUserConfirmation = this.getUserConfirmation.bind(this);
-    this.#receiptService = new ReceiptService(this.#stock, this.#promotion);
+    this.#productManagementService = new ProductManagementService(this.#stock, this.#promotion);
+    this.#productManagementService.getUserConfirmation = this.getUserConfirmation.bind(this);
+    this.#receiptService = new ReceiptService(this.#stock, this.#promotion, this.#productManagementService);
   }
 
   async start() {
@@ -27,8 +27,8 @@ class ConvenienceStoreController {
     OutputView.printStockInfo(this.#stock.getStockInfo());
 
     const productsInfo = await this.#validateInputAsync();
-    this.#convenienceStoreService.initProductsInfo(productsInfo);
-    await this.#convenienceStoreService.processProducts();
+    this.#productManagementService.initProductsInfo(productsInfo);
+    await this.#productManagementService.processProducts();
     // TODO: 멤버십 할인 로직 추가
     // TODO: 영수증 내역 계산 및 출력 로직 추가
     // TODO: 추가 구매 로직 추가
@@ -48,7 +48,7 @@ class ConvenienceStoreController {
     try {
       const productsToPurchase = await InputView.readProductsInfoAsync();
       const parsedProductsToPurchase = parser.splitEachProduct(productsToPurchase);
-      return validateProductsToPurchase(parsedProductsToPurchase, this.#stock, this.#convenienceStoreService);
+      return validateProductsToPurchase(parsedProductsToPurchase, this.#stock, this.#productManagementService);
     } catch (error) {
       OutputView.printErrorMessage(error.message);
       return this.#validateInputAsync();

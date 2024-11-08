@@ -2,11 +2,13 @@
 class ReceiptService {
   #stock;
   #promotion;
+  #productManagementService;
   #receiptInfo;
 
-  constructor(stock, promotion) {
+  constructor(stock, promotion, productManagementService) {
     this.#stock = stock;
     this.#promotion = promotion;
+    this.#productManagementService = productManagementService;
     this.#receiptInfo = [];
   }
 

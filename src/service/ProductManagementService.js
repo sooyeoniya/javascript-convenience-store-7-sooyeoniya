@@ -1,4 +1,4 @@
-class ConvenienceStoreService {
+class ProductManagementService {
   #stock;
   #promotion;
   #productsInfo;
@@ -154,4 +154,4 @@ class ConvenienceStoreService {
   }
 }
 
-export default ConvenienceStoreService;
+export default ProductManagementService;

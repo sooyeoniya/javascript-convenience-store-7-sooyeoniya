@@ -28,23 +28,23 @@ const validateQuantityFormat = (quantity) => {
   }
 }
 
-const validateProductsInStock = (name, quantity, stock, convenienceStore) => {
+const validateProductsInStock = (name, quantity, stock, productManagementService) => {
   if (!stock.checkProductExistence(name)) {
     throw new Error(ERROR_MESSAGES.NOT_EXIST);
   }
-  if (!convenienceStore.hasSufficientStock(name, quantity)) {
+  if (!productManagementService.hasSufficientStock(name, quantity)) {
     throw new Error(ERROR_MESSAGES.QUANTITY_IS_OVER_STOCK);
   }
 }
 
-const validateProductsToPurchase = (productsToPurchase, stock, convenienceStore) => {
+const validateProductsToPurchase = (productsToPurchase, stock, productManagementService) => {
   validateArrayFormat(productsToPurchase);
   const productsInfo = parser.extractProductsToPurchase(productsToPurchase);
   validateDuplicateProductsName(productsInfo);
 
   productsInfo.forEach(({ name, quantity }) => {
     validateQuantityFormat(quantity);
-    validateProductsInStock(name, quantity, stock, convenienceStore);
+    validateProductsInStock(name, quantity, stock, productManagementService);
   });
   return productsInfo;
 }
