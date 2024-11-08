@@ -19,7 +19,7 @@ const OutputView = {
     });
   },
 
-  printReceipt() {
+  printReceipt(receiptInfo) {
     Console.print('==============W 편의점================\n');
     Console.print('상품명             수량             금액');
 

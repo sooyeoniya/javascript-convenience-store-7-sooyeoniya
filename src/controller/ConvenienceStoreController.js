@@ -20,6 +20,7 @@ class ConvenienceStoreController {
     this.#productManagementService = new ProductManagementService(this.#stock, this.#promotion);
     this.#productManagementService.getUserConfirmation = this.getUserConfirmation.bind(this);
     this.#receiptService = new ReceiptService(this.#stock, this.#promotion, this.#productManagementService);
+    this.#receiptService.getUserConfirmation = this.getUserConfirmation.bind(this);
   }
 
   async start() {
@@ -29,8 +30,9 @@ class ConvenienceStoreController {
     const productsInfo = await this.#validateInputAsync();
     this.#productManagementService.initProductsInfo(productsInfo);
     await this.#productManagementService.processProducts();
-    // TODO: 멤버십 할인 로직 추가
-    // TODO: 영수증 내역 계산 및 출력 로직 추가
+    
+    const receiptInfo = await this.#receiptService.processReceipt();
+    OutputView.printReceipt(receiptInfo);
     // TODO: 추가 구매 로직 추가
   }
 
