@@ -28,17 +28,14 @@ class ConvenienceStoreController {
     }
   }
 
-  // TODO: 함수 길이 10으로 줄이기
   async processPurchase() {
-    OutputView.printWelcomeGreeting();
-    OutputView.printStockInfo(this.#stock.getStockInfo());
+    OutputView.printWelcomeGreetingAndStockInfo(this.#stock.getStockInfo());
 
     const productManagementService = new ProductManagementService(this.#stock, this.#promotion);
     const receiptService = new ReceiptService(this.#stock, this.#promotion, productManagementService);
 
     const productsInfo = await this.#validateInputAsync(productManagementService);
-    productManagementService.initProductsInfo(productsInfo);
-    await productManagementService.processProducts();
+    await productManagementService.processProducts(productsInfo);
     
     const receiptInfo = await receiptService.processReceipt();
     OutputView.printReceipt(receiptInfo);
