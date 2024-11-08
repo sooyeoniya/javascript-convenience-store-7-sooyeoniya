@@ -20,8 +20,7 @@ class ReceiptService {
   }
 
   async processReceipt() {
-    this.#calculateItemAndTotalCosts();
-    this.#calculateEventDiscount();
+    this.#calculateReceiptDetails();
     await this.#calculateMembershipDiscount();
     this.#calculateFinalAmount();
 
@@ -30,7 +29,7 @@ class ReceiptService {
     return this.#receiptInfo;
   }
 
-  #calculateItemAndTotalCosts() {
+  #calculateReceiptDetails() {
     this.#receiptInfo.items = this.#productManagementService.getProductsInfo();
     this.#receiptInfo.items.forEach((item) => {
       const price = this.#stock.getProductPrice(item.name);
@@ -38,17 +37,8 @@ class ReceiptService {
 
       this.#receiptInfo.totalAmount += item.itemTotalAmount;
       this.#receiptInfo.totalQuantity += item.quantity;
+      this.#receiptInfo.eventDiscount += item.giftCount * price;
     });
-  }
-
-  #calculateEventDiscount() {
-    // 행사 할인
-      // 각 상품별로 계산하여 더하기: `{증정품 개수} * {해당 상품 가격}`
-      // ConvenienceStoreService의 productsInfo에서 가져오기
-      // productsInfo (프로퍼티로 name, quantity, giftCount가 존재함)를 순회하며 다음 로직 처리
-      // stock의 stockInfo에서 productsInfo의 name과 일치하는 name에 대한 price 가져오기
-      // (productsInfo의 giftCount) * (stockInfo의 price)
-      // 출력: `행사할인   -${각 상품별 모두 더한 값((productsInfo의 giftCount) * (stockInfo의 price))}` (toLocaleString적용)
   }
 
   async #calculateMembershipDiscount() {

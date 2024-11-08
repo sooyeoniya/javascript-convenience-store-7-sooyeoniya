@@ -23,7 +23,7 @@ const OutputView = {
     Console.print('상품명             수량           금액');
 
     receiptInfo.items.forEach((item) => {
-      Console.print(`${item.name}             ${item.quantity}             ${item.itemTotalAmount}`);
+      Console.print(`${item.name}             ${item.quantity}           ${item.itemTotalAmount.toLocaleString('ko-KR')}`);
     });
 
     Console.print('==============증     정===============\n');
@@ -34,10 +34,10 @@ const OutputView = {
       });
 
     Console.print('======================================\n');
-    Console.print(`총구매액             ${receiptInfo.totalQuantity}          ${receiptInfo.totalAmount}`);
-    Console.print(`행사할인                            ${receiptInfo.eventDiscount}`);
-    Console.print(`멤버십할인                          ${receiptInfo.membershipDiscount}`);
-    Console.print(`내실돈                              ${receiptInfo.finalAmount}`);
+    Console.print(`총구매액             ${receiptInfo.totalQuantity}          ${receiptInfo.totalAmount.toLocaleString('ko-KR')}`);
+    Console.print(`행사할인                            -${receiptInfo.eventDiscount.toLocaleString('ko-KR')}`);
+    Console.print(`멤버십할인                          -${receiptInfo.membershipDiscount.toLocaleString('ko-KR')}`);
+    Console.print(`내실돈                              ${receiptInfo.finalAmount.toLocaleString('ko-KR')}`);
   },
 
   printErrorMessage(errorMessage) {
