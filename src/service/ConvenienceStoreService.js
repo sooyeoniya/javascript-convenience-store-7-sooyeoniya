@@ -39,14 +39,14 @@ class ConvenienceStoreService {
 
           await this.#offerAdditionalPromotionItems(name, quantity);
           const productInfo = this.getProductInfo(name);
-          this.#updateGiftCountWhenStockIsSufficient(productInfo, name, productInfo.quantity);
+          this.#setGiftCountWhenStockIsSufficient(productInfo, name, productInfo.quantity);
           this.#stock.updatePromotionStockInfo(name, productInfo.quantity);
 
         } else {
 
           await this.#offerLackOfPromotionStock(name, quantity, productPromotionStockQuantity);
           const productInfo = this.getProductInfo(name);
-          this.#updateGiftCountWhenStockIsInsufficient(productInfo, name, productPromotionStockQuantity);
+          this.#setGiftCountWhenStockIsInsufficient(productInfo, name, productPromotionStockQuantity);
           this.#stock.updatePromotionStockInfo(name, productInfo.quantity);
 
         }
@@ -59,22 +59,29 @@ class ConvenienceStoreService {
     this.#productsInfo.forEach(({ name, quantity }) => {
       if (!this.#isAvailablePromotion(name)) {
         this.#stock.updateGeneralStockInfo(name, quantity);
+        this.#setGiftCountToZeroForNoPromotion(name);
       }
     });
   }
 
   // 증정품 개수 추가: {프로모션 재고 수량} > {현재상품수량} 인 경우, {증정품 개수} = {현재상품수량} / 3 or 2
-  #updateGiftCountWhenStockIsSufficient(productInfo, productName, productQuantity) {
+  #setGiftCountWhenStockIsSufficient(productInfo, productName, productQuantity) {
     const promotionName = this.#stock.getPromotionName(productName);
     const promotionBuyPlusGetValue = this.#promotion.getPromotionBuyPlusGetValue(promotionName);
     productInfo.giftCount = Math.floor(productQuantity / promotionBuyPlusGetValue);
   }
 
   // 증정품 개수 추가: {프로모션 재고 수량} <= {현재상품수량} 인 경우, {증정품 개수} = {프로모션 재고 수량} / 3 or 2
-  #updateGiftCountWhenStockIsInsufficient(productInfo, productName, productPromotionStockQuantity) {
+  #setGiftCountWhenStockIsInsufficient(productInfo, productName, productPromotionStockQuantity) {
     const promotionName = this.#stock.getPromotionName(productName);
     const promotionBuyPlusGetValue = this.#promotion.getPromotionBuyPlusGetValue(promotionName);
     productInfo.giftCount = Math.floor(productPromotionStockQuantity / promotionBuyPlusGetValue);
+  }
+
+  // 증정품 개수 추가: 프로모션 미적용 상품에 대한 증정품 개수 초기화
+  #setGiftCountToZeroForNoPromotion(productName) {
+    const productInfo = this.getProductInfo(productName);
+    productInfo.giftCount = 0;
   }
 
   // 구매할 상품에 대한 수량 갱신
