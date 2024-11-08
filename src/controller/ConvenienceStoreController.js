@@ -6,7 +6,6 @@ import OutputView from '../view/OutputView.js';
 import ReceiptService from '../service/ReceiptService.js';
 import ProductManagementService from '../service/ProductManagementService.js';
 import validateProductsToPurchase from '../validations/validateProductsToPurchase.js';
-import validateConfirmationResponse from '../validations/validateConfirmationResponse.js';
 
 class ConvenienceStoreController {
   #stock;
@@ -18,9 +17,7 @@ class ConvenienceStoreController {
     this.#stock = new Stock();
     this.#promotion = new Promotion();
     this.#productManagementService = new ProductManagementService(this.#stock, this.#promotion);
-    this.#productManagementService.getUserConfirmation = this.getUserConfirmation.bind(this);
     this.#receiptService = new ReceiptService(this.#stock, this.#promotion, this.#productManagementService);
-    this.#receiptService.getUserConfirmation = this.getUserConfirmation.bind(this);
   }
 
   async start() {
@@ -34,16 +31,6 @@ class ConvenienceStoreController {
     const receiptInfo = await this.#receiptService.processReceipt();
     OutputView.printReceipt(receiptInfo);
     // TODO: 추가 구매 로직 추가
-  }
-
-  async getUserConfirmation(message) {
-    try {
-      const userInput = await InputView.readUserConfirmationAsync(message);
-      return validateConfirmationResponse(userInput);
-    } catch (error) {
-      OutputView.printErrorMessage(error.message);
-      return await this.getUserConfirmation(message);
-    }
   }
 
   async #validateInputAsync() {
