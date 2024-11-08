@@ -20,28 +20,25 @@ class ReceiptService {
   }
 
   async processReceipt() {
-    this.#calculateItemCosts();
-    this.#calculateTotalCosts();
+    this.#calculateItemAndTotalCosts();
     this.#calculateEventDiscount();
     await this.#calculateMembershipDiscount();
     this.#calculateFinalAmount();
 
+    console.log(this.#receiptInfo);
+
     return this.#receiptInfo;
   }
 
-  #calculateItemCosts() {
+  #calculateItemAndTotalCosts() {
     this.#receiptInfo.items = this.#productManagementService.getProductsInfo();
     this.#receiptInfo.items.forEach((item) => {
       const price = this.#stock.getProductPrice(item.name);
       item.itemTotalAmount = item.quantity * price;
-    });
-  }
 
-  #calculateTotalCosts() {
-    // 총 구매액 및 총 구매 수량
-      // 총 구매 수량: productsInfo를 순회하며 quantity 모두 합산
-      // 총 구매액: 각 상품별 구매액 모두 합산
-      // 출력: `총구매액  ${총 구매 수량}  ${총 구매액(toLocaleString적용))}`
+      this.#receiptInfo.totalAmount += item.itemTotalAmount;
+      this.#receiptInfo.totalQuantity += item.quantity;
+    });
   }
 
   #calculateEventDiscount() {
