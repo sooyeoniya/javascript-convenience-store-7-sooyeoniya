@@ -1,5 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-import { INPUT_MESSAGES } from '../constants/constants.js';
+import { PROMPT_MESSAGES } from '../constants/constants.js';
 
 const readInput = (inputMessage) => {
   try {
@@ -11,7 +11,7 @@ const readInput = (inputMessage) => {
 
 const InputView = {
   async readProductsInfoAsync() {
-    return await readInput(INPUT_MESSAGES.PRODUCTS_INFO);
+    return await readInput(PROMPT_MESSAGES.PRODUCTS_INFO);
   },
 
   async readUserConfirmationAsync(message) {

@@ -1,9 +1,9 @@
 import { Console } from '@woowacourse/mission-utils';
-import { OUTPUT_MESSAGES } from '../constants/constants.js';
+import { PROMPT_MESSAGES } from '../constants/constants.js';
 
 const OutputView = {
   printWelcomeGreetingAndStockInfo(stockInfo) {
-    Console.print(OUTPUT_MESSAGES.WELCOME_GREETING);
+    Console.print(PROMPT_MESSAGES.WELCOME_GREETING);
     stockInfo.forEach((productInfo) => this.printProductInfo(productInfo));
   },
 

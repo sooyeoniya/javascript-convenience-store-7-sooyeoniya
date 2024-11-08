@@ -7,7 +7,7 @@ import ReceiptService from '../service/ReceiptService.js';
 import ProductManagementService from '../service/ProductManagementService.js';
 import validateProductsToPurchase from '../validations/validateProductsToPurchase.js';
 import getUserConfirmation from '../utils/getUserConfirmation.js';
-import { INPUT_MESSAGES } from '../constants/constants.js';
+import { PROMPT_MESSAGES } from '../constants/constants.js';
 
 class ConvenienceStoreController {
   #stock;
@@ -21,10 +21,10 @@ class ConvenienceStoreController {
   async start() {
     await this.processPurchase();
 
-    let additionalPurchase = await getUserConfirmation(INPUT_MESSAGES.ADDITIONAL_PURCHASE);
+    let additionalPurchase = await getUserConfirmation(PROMPT_MESSAGES.ADDITIONAL_PURCHASE);
     while (additionalPurchase.toUpperCase() === 'Y') {
       await this.processPurchase();
-      additionalPurchase = await getUserConfirmation(INPUT_MESSAGES.ADDITIONAL_PURCHASE);
+      additionalPurchase = await getUserConfirmation(PROMPT_MESSAGES.ADDITIONAL_PURCHASE);
     }
   }
 
