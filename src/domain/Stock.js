@@ -52,10 +52,10 @@ class Stock {
     const promotionStockQuantity = productPromotionStockInfo.quantity;
     if (promotionStockQuantity > productQuantity) {
       productPromotionStockInfo.quantity -= productQuantity;
-    } else {
-      productPromotionStockInfo.quantity = 0;
-      productGeneralStockInfo.quantity -= (productQuantity - promotionStockQuantity);
+      return;
     }
+    productPromotionStockInfo.quantity = 0;
+    productGeneralStockInfo.quantity -= (productQuantity - promotionStockQuantity);
   }
 
   // 프로모션 미적용 상품에 대한 일반 재고 차감
