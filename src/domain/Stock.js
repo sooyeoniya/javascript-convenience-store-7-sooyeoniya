@@ -64,6 +64,11 @@ class Stock {
     productGeneralStockInfo.quantity -= productQuantity;
   }
 
+  // 존재하는 상품인지 확인
+  checkProductExistence(productName) {
+    return this.#stockInfo.some((product) => product.name === productName);
+  }
+
   // 파일 읽기
   #readStockInfoFromFile() {
     const stockInfo = fs.readFileSync('public/products.md', 'utf-8').trim().split('\n');

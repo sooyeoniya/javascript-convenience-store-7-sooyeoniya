@@ -1,17 +1,12 @@
-import Stock from '../domain/Stock.js';
-import Promotion from '../domain/Promotion.js';
-
 class ConvenienceStoreService {
   #stock;
   #promotion;
   #productsInfo;
-  #receiptInfo;
 
-  constructor() {
-    this.#stock = new Stock();
-    this.#promotion = new Promotion();
+  constructor(stock, promotion) {
+    this.#stock = stock;
+    this.#promotion = promotion;
     this.#productsInfo = [];
-    this.#receiptInfo = [];
   }
 
   // 구매할 상품 및 수량 저장
@@ -27,16 +22,6 @@ class ConvenienceStoreService {
   // 해당하는 구매할 상품 및 수량 정보 반환
   getProductInfo(productName) {
     return this.#productsInfo.find((product) => product.name === productName);
-  }
-
-  // 재고 정보 받아오기
-  getStockInfo() {
-    return this.#stock.getStockInfo();
-  }
-
-  // 존재하는 상품인지 확인
-  checkProductExistence(productName) {
-    return this.#stock.getStockInfo().some((product) => product.name === productName);
   }
 
   // 재고 수량 초과하는지 확인
