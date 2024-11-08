@@ -46,7 +46,7 @@ class Stock {
 
   // {프로모션 재고 수량} > {현재상품수량} 인 경우, 프로모션 재고 업데이트: {프로모션 재고 수량} - {현재상품수량}
   // {프로모션 재고 수량} <= {현재상품수량} 인 경우, 프로모션 재고 우선 차감 후, 나머지 일반 재고 차감
-  updateStockInfo(productName, productQuantity) {
+  updatePromotionStockInfo(productName, productQuantity) {
     const productPromotionStockInfo = this.getProductPromotionStockInfo(productName);
     const productGeneralStockInfo = this.getProductGeneralStockInfo(productName);
     const promotionStockQuantity = productPromotionStockInfo.quantity;
@@ -56,6 +56,11 @@ class Stock {
       productPromotionStockInfo.quantity = 0;
       productGeneralStockInfo.quantity -= (productQuantity - promotionStockQuantity);
     }
+  }
+
+  updateGeneralStockInfo(productName, productQuantity) {
+    const productGeneralStockInfo = this.getProductGeneralStockInfo(productName);
+    productGeneralStockInfo.quantity -= productQuantity;
   }
 
   // 파일 읽기
