@@ -28,8 +28,7 @@ class ConvenienceStoreController {
 
     const productsInfo = await this.#validateInputAsync();
     this.#convenienceStoreService.initProductsInfo(productsInfo);
-    await this.#convenienceStoreService.processProductPromotions();
-    await this.#convenienceStoreService.processGeneralProduct();
+    await this.#convenienceStoreService.processProducts();
     // TODO: 멤버십 할인 로직 추가
     // TODO: 영수증 내역 계산 및 출력 로직 추가
     // TODO: 추가 구매 로직 추가

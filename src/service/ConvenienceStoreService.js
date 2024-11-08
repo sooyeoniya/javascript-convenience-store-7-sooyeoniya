@@ -30,38 +30,38 @@ class ConvenienceStoreService {
     return totalQuantity >= requestedQuantity;
   }
 
-  // 프로모션 할인 전체 로직 관리
-  async processProductPromotions() {
+  // 구매할 상품들에 대한 처리 로직
+  async processProducts() {
     for (const { name, quantity } of this.#productsInfo) {
-      if (this.#isAvailablePromotion(name)) {
-        const productPromotionStockQuantity = this.#stock.getPromotionStockQuantity(name);
-        if (productPromotionStockQuantity > quantity) {
+      if (this.#isGeneralProduct(name, quantity)) continue;
 
-          await this.#offerAdditionalPromotionItems(name, quantity);
-          const productInfo = this.getProductInfo(name);
-          this.#setGiftCountWhenStockIsSufficient(productInfo, name, productInfo.quantity);
-          this.#stock.updatePromotionStockInfo(name, productInfo.quantity);
-
-        } else {
-
-          await this.#offerLackOfPromotionStock(name, quantity, productPromotionStockQuantity);
-          const productInfo = this.getProductInfo(name);
-          this.#setGiftCountWhenStockIsInsufficient(productInfo, name, productPromotionStockQuantity);
-          this.#stock.updatePromotionStockInfo(name, productInfo.quantity);
-
-        }
-      }
-    };
+      const productInfo = this.getProductInfo(name);
+      await this.#processPromotionStock(name, quantity, productInfo);
+    }
   }
 
-  // 프로모션 미적용 상품에 대한 전체 로직 관리
-  async processGeneralProduct() {
-    this.#productsInfo.forEach(({ name, quantity }) => {
-      if (!this.#isAvailablePromotion(name)) {
-        this.#stock.updateGeneralStockInfo(name, quantity);
-        this.#setGiftCountToZeroForNoPromotion(name);
-      }
-    });
+  // 프로모션 미적용 상품 처리
+  #isGeneralProduct(name, quantity) {
+    if (!this.#isAvailablePromotion(name)) {
+      this.#stock.updateGeneralStockInfo(name, quantity);
+      this.#setGiftCountToZeroForNoPromotion(name);
+      return true;
+    }
+    return false;
+  }
+
+  // 프로모션 적용 상품에 대한 재고 처리 로직
+  async #processPromotionStock(name, quantity, productInfo) {
+    const productPromotionStockQuantity = this.#stock.getPromotionStockQuantity(name);
+    if (productPromotionStockQuantity > quantity) {
+      await this.#offerAdditionalPromotionItems(name, quantity);
+      this.#setGiftCountWhenStockIsSufficient(productInfo, name, productInfo.quantity);
+      this.#stock.updatePromotionStockInfo(name, productInfo.quantity);
+      return;
+    }
+    await this.#offerLackOfPromotionStock(name, quantity, productPromotionStockQuantity);
+    this.#setGiftCountWhenStockIsInsufficient(productInfo, name, productPromotionStockQuantity);
+    this.#stock.updatePromotionStockInfo(name, productInfo.quantity);
   }
 
   // 증정품 개수 추가: {프로모션 재고 수량} > {현재상품수량} 인 경우, {증정품 개수} = {현재상품수량} / 3 or 2
