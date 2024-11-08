@@ -24,6 +24,7 @@ class ReceiptService {
     await this.#calculateMembershipDiscount();
     this.#calculateFinalAmount();
 
+    // TODO: 삭제할 코드
     console.log(this.#receiptInfo);
 
     return this.#receiptInfo;
@@ -61,9 +62,7 @@ class ReceiptService {
   }
 
   #calculateFinalAmount() {
-    // 내실 돈
-      // `{총 구매액} - {행사 할인 금액} - {멤버십 할인 금액}`
-      // 출력 `내실 돈  ${내실 돈}` (toLocaleString적용)
+    this.#receiptInfo.finalAmount = this.#receiptInfo.totalAmount - this.#receiptInfo.eventDiscount - this.#receiptInfo.membershipDiscount;
   }
 }
 
