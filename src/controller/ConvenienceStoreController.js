@@ -28,7 +28,7 @@ class ConvenienceStoreController {
 
   async getUserConfirmation(message) {
     try {
-      const userInput = await InputView.readUserConfirmation(message);
+      const userInput = await InputView.readUserConfirmationAsync(message);
       return validateConfirmationResponse(userInput);
     } catch (error) {
       OutputView.printErrorMessage(error.message);
