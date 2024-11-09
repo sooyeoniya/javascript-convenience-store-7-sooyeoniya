@@ -17,11 +17,6 @@ class ProductManagementService {
     return this.#productsInfo;
   }
 
-  // 해당하는 구매할 상품 및 수량 정보 반환
-  getProductInfo(productName) {
-    return this.#productsInfo.find((product) => product.name === productName);
-  }
-
   // 재고 수량 초과하는지 확인
   hasSufficientStock(productName, requestedQuantity) {
     const totalQuantity = this.#calculateTotalQuantity(productName);
@@ -34,7 +29,7 @@ class ProductManagementService {
     for (const { name, quantity } of this.#productsInfo) {
       if (this.#isGeneralProduct(name, quantity)) continue;
 
-      const productInfo = this.getProductInfo(name);
+      const productInfo = this.#getProductInfo(name);
       await this.#processPromotionStock(name, quantity, productInfo);
     }
   }
@@ -79,7 +74,7 @@ class ProductManagementService {
 
   // 증정품 개수 추가: 프로모션 미적용 상품에 대한 증정품 개수 초기화
   #setGiftCountToZeroForNoPromotion(productName) {
-    const productInfo = this.getProductInfo(productName);
+    const productInfo = this.#getProductInfo(productName);
     productInfo.giftCount = 0;
   }
 
@@ -150,6 +145,11 @@ class ProductManagementService {
       if (condition(product)) total += product.quantity;
       return total;
     }, 0);
+  }
+
+  // 해당하는 상품에 대한 상품 및 수량 정보 반환
+  #getProductInfo(productName) {
+    return this.#productsInfo.find((product) => product.name === productName);
   }
 
   // 구매할 상품 및 수량 저장
