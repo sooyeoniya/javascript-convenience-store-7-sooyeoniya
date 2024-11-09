@@ -1,6 +1,5 @@
 import Stock from '../domain/Stock.js';
 import Promotion from '../domain/Promotion.js';
-import parser from '../utils/parser.js';
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import ReceiptService from '../service/ReceiptService.js';
@@ -8,6 +7,7 @@ import ProductManagementService from '../service/ProductManagementService.js';
 import validateProductsToPurchase from '../validations/validateProductsToPurchase.js';
 import getUserConfirmation from '../utils/getUserConfirmation.js';
 import { PROMPT_MESSAGES } from '../constants/constants.js';
+import { splitEachProduct } from '../utils/parser.js';
 
 class ConvenienceStoreController {
   #stock;
@@ -44,7 +44,7 @@ class ConvenienceStoreController {
   async #validateInputAsync(productManagementService) {
     try {
       const productsToPurchase = await InputView.readProductsInfoAsync();
-      const parsedProductsToPurchase = parser.splitEachProduct(productsToPurchase);
+      const parsedProductsToPurchase = splitEachProduct(productsToPurchase);
       return validateProductsToPurchase(parsedProductsToPurchase, this.#stock, productManagementService);
     } catch (error) {
       OutputView.printErrorMessage(error.message);

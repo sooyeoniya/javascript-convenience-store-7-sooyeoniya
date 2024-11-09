@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES } from '../constants/constants.js';
-import parser from '../utils/parser.js';
+import { extractProductsToPurchase } from '../utils/parser.js';
 
 const validateArrayFormat = (productsToPurchase) => {
   const formatRegex = /^\[([^\[\]-]+)-(\d+)\]$/;
@@ -39,7 +39,7 @@ const validateProductsInStock = (name, quantity, stock, productManagementService
 
 const validateProductsToPurchase = (productsToPurchase, stock, productManagementService) => {
   validateArrayFormat(productsToPurchase);
-  const productsInfo = parser.extractProductsToPurchase(productsToPurchase);
+  const productsInfo = extractProductsToPurchase(productsToPurchase);
   validateDuplicateProductsName(productsInfo);
 
   productsInfo.forEach(({ name, quantity }) => {
