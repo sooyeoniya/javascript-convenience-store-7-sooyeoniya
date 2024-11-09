@@ -19,21 +19,33 @@ const OutputView = {
     Console.print(`- ${productInfo.name} ${priceText}원 ${quentityText} ${promotionText}`);
   },
 
-  // TODO: 함수 길이 10으로 줄이기
   printReceipt(receiptInfo) {
-    Console.print(RECEIPT_MESSAGES.HEADER);
+    this.printHeader();
+    this.printItemDetails(receiptInfo.items);
+    this.printGiftDetails(receiptInfo.items);
+    this.printSummary(receiptInfo);
+  },
 
-    receiptInfo.items.forEach((item) => {
+  printHeader() {
+    Console.print(RECEIPT_MESSAGES.HEADER);
+  },
+
+  printItemDetails(items) {
+    items.forEach((item) => {
       Console.print(`${formatItemName(item.name)}\t${item.quantity}\t\t${formatPrice(item.itemTotalAmount)}`);
     });
+  },
 
+  printGiftDetails(items) {
     Console.print(RECEIPT_MESSAGES.GIFT_LINE);
-    receiptInfo.items
+    items
       .filter((item) => item.giftCount > 0)
       .forEach((item) => {
         Console.print(`${formatItemName(item.name)}\t${item.giftCount}`);
       });
+  },
 
+  printSummary(receiptInfo) {
     Console.print(RECEIPT_MESSAGES.TOTAL_LINE);
     Console.print(`${RECEIPT_LABELS.TOTAL_PURCHASE_AMOUNT}\t${receiptInfo.totalQuantity}\t\t${formatPrice(receiptInfo.totalAmount)}`);
     Console.print(`${RECEIPT_LABELS.EVENT_DISCOUNT}\t\t\t-${formatPrice(receiptInfo.eventDiscount)}`);
