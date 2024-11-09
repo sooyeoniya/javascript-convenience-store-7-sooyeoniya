@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { STOCK_LABELS } from '../constants/constants.js';
 
 class Stock {
   #stockInfo = [];
@@ -86,7 +87,7 @@ class Stock {
   #parseProductInfo(productInfo) {
     let [name, price, quantity, promotion] = productInfo.split(',');
 
-    if (promotion === 'null') promotion = null;
+    if (promotion === STOCK_LABELS.NULL) promotion = null;
     price = Number(price);
     quantity = Number(quantity);
 

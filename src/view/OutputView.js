@@ -1,5 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-import { PROMPT_MESSAGES, RECEIPT_MESSAGES } from '../constants/constants.js';
+import { PROMPT_MESSAGES, RECEIPT_LABELS, RECEIPT_MESSAGES, STOCK_LABELS } from '../constants/constants.js';
 import { formatPrice, formatItemName } from '../utils/parser.js';
 
 const OutputView = {
@@ -12,7 +12,7 @@ const OutputView = {
     let promotionText = productInfo.promotion;
     if (!productInfo.promotion) promotionText = '';
 
-    let quentityText = '재고 없음';
+    let quentityText = STOCK_LABELS.NO_STOCK;
     if (productInfo.quantity > 0) quentityText = `${productInfo.quantity}개`;
 
     const priceText = formatPrice(productInfo.price);
@@ -35,10 +35,10 @@ const OutputView = {
       });
 
     Console.print(RECEIPT_MESSAGES.TOTAL_LINE);
-    Console.print(`총구매액\t${receiptInfo.totalQuantity}\t\t${formatPrice(receiptInfo.totalAmount)}`);
-    Console.print(`행사할인\t\t\t-${formatPrice(receiptInfo.eventDiscount)}`);
-    Console.print(`멤버십할인\t\t\t-${formatPrice(receiptInfo.membershipDiscount)}`);
-    Console.print(`내실돈\t\t\t\t${formatPrice(receiptInfo.finalAmount)}`);
+    Console.print(`${RECEIPT_LABELS.TOTAL_PURCHASE_AMOUNT}\t${receiptInfo.totalQuantity}\t\t${formatPrice(receiptInfo.totalAmount)}`);
+    Console.print(`${RECEIPT_LABELS.EVENT_DISCOUNT}\t\t\t-${formatPrice(receiptInfo.eventDiscount)}`);
+    Console.print(`${RECEIPT_LABELS.MEMBERSHIP_DISCOUNT}\t\t\t-${formatPrice(receiptInfo.membershipDiscount)}`);
+    Console.print(`${RECEIPT_LABELS.FINAL_AMOUNT}\t\t\t\t${formatPrice(receiptInfo.finalAmount)}`);
   },
 
   printErrorMessage(errorMessage) {

@@ -20,3 +20,15 @@ export const RECEIPT_MESSAGES = Object.freeze({
   GIFT_LINE: '\n==============증     정===============\n',
   TOTAL_LINE: '\n======================================\n',
 });
+
+export const RECEIPT_LABELS = Object.freeze({
+  TOTAL_PURCHASE_AMOUNT: '총구매액',
+  EVENT_DISCOUNT: '행사할인',
+  MEMBERSHIP_DISCOUNT: '멤버십할인',
+  FINAL_AMOUNT: '내실돈',
+});
+
+export const STOCK_LABELS = Object.freeze({
+  NULL: 'null',
+  NO_STOCK: '재고 없음',
+});
