@@ -37,8 +37,7 @@ class Stock {
     return this.#stockInfo.some((product) => product.name === productName);
   }
 
-  // {프로모션 재고 수량} > {현재상품수량} 인 경우, 프로모션 재고 업데이트: {프로모션 재고 수량} - {현재상품수량}
-  // {프로모션 재고 수량} <= {현재상품수량} 인 경우, 프로모션 재고 우선 차감 후, 나머지 일반 재고 차감
+  // 프로모션 적용 상품에 대한 재고 차감
   updatePromotionStockInfo(productName, productQuantity) {
     const productPromotionStockInfo = this.#getProductPromotionStockInfo(productName);
     const productGeneralStockInfo = this.#getProductGeneralStockInfo(productName);
