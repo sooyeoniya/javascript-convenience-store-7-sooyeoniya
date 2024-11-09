@@ -14,27 +14,27 @@ class Promotion {
     return this.#promotionInfo;
   }
 
-  // 해당하는 프로모션 정보 반환
-  getPromotionInfoByName(promotionName) {
-    return this.#promotionInfo.find((promotion) => promotion.name === promotionName);
-  }
-
   // 해당하는 프로모션에 대한 buy 값 반환
   getPromotionBuyValue(promotionName) {
-    const promotion = this.getPromotionInfoByName(promotionName);
+    const promotion = this.#getPromotionInfoByName(promotionName);
     return promotion.buy;
   }
 
   // 해당하는 프로모션에 대한 get 값 반환
   getPromotionGetValue(promotionName) {
-    const promotion = this.getPromotionInfoByName(promotionName);
+    const promotion = this.#getPromotionInfoByName(promotionName);
     return promotion.get;
   }
   
   // 해당하는 프로모션에 대한 buy + get 값 반환
   getPromotionBuyPlusGetValue(promotionName) {
-    const promotion = this.getPromotionInfoByName(promotionName);
+    const promotion = this.#getPromotionInfoByName(promotionName);
     return promotion.buy + promotion.get;
+  }
+
+  // 해당하는 프로모션 정보 반환
+  #getPromotionInfoByName(promotionName) {
+    return this.#promotionInfo.find((promotion) => promotion.name === promotionName);
   }
 
   // 오늘 날짜 기준으로 프로모션 적용 기간인지 확인
