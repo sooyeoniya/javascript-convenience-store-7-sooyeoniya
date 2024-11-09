@@ -32,3 +32,8 @@ export const STOCK_LABELS = Object.freeze({
   NULL: 'null',
   NO_STOCK: '재고 없음',
 });
+
+export const CONFIRMATION_RESPONSES = {
+  YES: 'Y',
+  NO: 'N',
+};

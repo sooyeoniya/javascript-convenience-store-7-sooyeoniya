@@ -1,4 +1,4 @@
-import { PROMPT_MESSAGES } from '../constants/constants.js';
+import { CONFIRMATION_RESPONSES, PROMPT_MESSAGES } from '../constants/constants.js';
 import getUserConfirmation from '../utils/getUserConfirmation.js';
 
 class ReceiptService {
@@ -44,7 +44,7 @@ class ReceiptService {
   // TODO: 함수 길이 10으로 줄이기, indent depth 2로 줄이기
   async #calculateMembershipDiscount() {
     const response = await getUserConfirmation(PROMPT_MESSAGES.MEMBERSHIP_DISCOUNT);
-    if (response.toUpperCase() === 'Y') {
+    if (response === CONFIRMATION_RESPONSES.YES) {
       let nonDiscountableAmount = 0;
       this.#receiptInfo.items.forEach((item) => {
         if (item.giftCount > 0) {

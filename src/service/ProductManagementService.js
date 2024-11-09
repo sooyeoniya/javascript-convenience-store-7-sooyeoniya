@@ -1,3 +1,4 @@
+import { CONFIRMATION_RESPONSES } from '../constants/constants.js';
 import getUserConfirmation from '../utils/getUserConfirmation.js';
 
 class ProductManagementService {
@@ -105,8 +106,8 @@ class ProductManagementService {
     const response = await getUserConfirmation(
       `\n현재 ${productName}은(는) ${promotionGetValue}개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`
     );
-    if (response.toUpperCase() === 'Y') return productQuantity + promotionGetValue;
-    if (response.toUpperCase() === 'N') return productQuantity;
+    if (response === CONFIRMATION_RESPONSES.YES) return productQuantity + promotionGetValue;
+    if (response === CONFIRMATION_RESPONSES.NO) return productQuantity;
   }
 
   // 프로모션 재고가 부족한 것에 대한 안내 메시지 출력 및 수량 갱신
@@ -123,8 +124,8 @@ class ProductManagementService {
     const response = await getUserConfirmation(
       `\n현재 ${productName} ${nonPromotionalQuantity}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`
     );
-    if (response.toUpperCase() === 'Y') return productQuantity;
-    if (response.toUpperCase() === 'N') return productQuantity - nonPromotionalQuantity;
+    if (response === CONFIRMATION_RESPONSES.YES) return productQuantity;
+    if (response === CONFIRMATION_RESPONSES.NO) return productQuantity - nonPromotionalQuantity;
   }
 
   // 프로모션 적용 가능한 상품인지 아닌지 확인
