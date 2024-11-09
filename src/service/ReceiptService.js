@@ -55,13 +55,11 @@ class ReceiptService {
           const promotionName = this.#stock.getPromotionName(item.name);
           const promotionValue = this.#promotion.getPromotionBuyPlusGetValue(promotionName);
           nonDiscountableAmount += price * item.giftCount * promotionValue;
-
-          let membershipDiscount = (this.#receiptInfo.totalAmount - nonDiscountableAmount) * 0.3;
-          membershipDiscount = Math.min(membershipDiscount, 8000);
-      
-          this.#receiptInfo.membershipDiscount = membershipDiscount;
         }
       });
+      let membershipDiscount = (this.#receiptInfo.totalAmount - nonDiscountableAmount) * 0.3;
+      membershipDiscount = Math.min(membershipDiscount, 8000);
+      this.#receiptInfo.membershipDiscount = membershipDiscount;
     }
   }
 
