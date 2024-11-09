@@ -1,6 +1,6 @@
-import fs from 'fs';
 import { MissionUtils } from '@woowacourse/mission-utils';
 import { DELIMITER } from '../constants/constants.js';
+import readFileData from '../utils/readFileData.js';
 
 class Promotion {
   #promotionInfo = [];
@@ -46,19 +46,13 @@ class Promotion {
     });
   }
 
-  // 파일 읽기
-  #readPromotionInfoFromFile() {
-    const promotionInfo = fs.readFileSync('public/promotions.md', 'utf-8').trim().split('\n');
-    promotionInfo.shift();
-
-    return promotionInfo;
-  }
-
   // 파일 내용 파싱
   #parsePromotionInfo(promotion) {
     let [name, buy, get, startDate, endDate] = promotion.split(DELIMITER);
+
     buy = Number(buy);
     get = Number(get);
+
     startDate = new Date(startDate);
     endDate = new Date(endDate);
 
@@ -67,7 +61,7 @@ class Promotion {
 
   // promotionInfo 필드 초기화
   #initPromotionInfo() {
-    const promotionInfo = this.#readPromotionInfoFromFile();
+    const promotionInfo = readFileData('public/promotions.md');
 
     promotionInfo.forEach((promotion) => {
       const parsedPromotion = this.#parsePromotionInfo(promotion);

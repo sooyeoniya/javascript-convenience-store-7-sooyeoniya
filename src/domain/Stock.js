@@ -1,5 +1,5 @@
-import fs from 'fs';
 import { STOCK_LABELS, DELIMITER } from '../constants/constants.js';
+import readFileData from '../utils/readFileData.js';
 
 class Stock {
   #stockInfo = [];
@@ -18,12 +18,12 @@ class Stock {
     return this.#stockInfo.find((product) => product.name === productName).price;
   }
 
-  // 현재 상품에 대한 프로모션 이름 (프로모션 혜택 있는 경우 프로모션 혜택 이름 먼저 반환, 없으면 null 반환)
+  // 현재 상품에 대한 프로모션 이름 반환 (프로모션 혜택 있는 경우 프로모션 혜택 이름 먼저 반환, 없으면 null 반환)
   getPromotionName(productName) {
     return this.#stockInfo.find((product) => product.name === productName).promotion;
   }
   
-  // 현재 상품에 대한 프로모션 재고 수량
+  // 현재 상품에 대한 프로모션 재고 수량 반환
   getPromotionStockQuantity(productName) {
     const promotionName = this.getPromotionName(productName);
     const product = this.#stockInfo.find((product) => 
@@ -66,14 +66,6 @@ class Stock {
     return this.#stockInfo.find((product) => product.name === productName && product.promotion === null);
   }
 
-  // 파일 읽기
-  #readStockInfoFromFile() {
-    const stockInfo = fs.readFileSync('public/products.md', 'utf-8').trim().split('\n');
-    stockInfo.shift();
-
-    return stockInfo;
-  }
-
   // 파일 내용 파싱
   #parseProductInfo(productInfo) {
     let [name, price, quantity, promotion] = productInfo.split(DELIMITER);
@@ -87,7 +79,7 @@ class Stock {
 
   // stockInfo 필드 초기화
   #initStockInfo() {
-    const stockInfo = this.#readStockInfoFromFile();
+    const stockInfo = readFileData('public/products.md');
 
     stockInfo.forEach((productInfo) => {
       const product = this.#parseProductInfo(productInfo);
