@@ -26,9 +26,6 @@ class ReceiptService {
     await this.#calculateMembershipDiscount();
     this.#calculateFinalAmount();
 
-    // TODO: 삭제할 코드
-    console.log(this.#receiptInfo);
-
     return this.#receiptInfo;
   }
 

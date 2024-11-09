@@ -20,25 +20,29 @@ const OutputView = {
 
   // TODO: 함수 길이 10으로 줄이기
   printReceipt(receiptInfo) {
-    Console.print('==============W 편의점================\n');
-    Console.print('상품명             수량           금액');
+    Console.print('\n==============W 편의점================');
+    Console.print('상품명\t\t수량\t\t금액\n');
 
     receiptInfo.items.forEach((item) => {
-      Console.print(`${item.name}             ${item.quantity}           ${item.itemTotalAmount.toLocaleString('ko-KR')}`);
+      let name = item.name;
+      if (item.name.length < 4) name = `${item.name}\t`;
+      Console.print(`${name}\t${item.quantity}\t\t${item.itemTotalAmount.toLocaleString('ko-KR')}`);
     });
 
-    Console.print('==============증     정===============\n');
+    Console.print('\n==============증     정===============\n');
     receiptInfo.items
       .filter((item) => item.giftCount > 0)
       .forEach((item) => {
-        Console.print(`${item.name}             ${item.giftCount}`);
+        let name = item.name;
+        if (item.name.length < 4) name = `${item.name}\t`;
+        Console.print(`${name}\t${item.giftCount}`);
       });
 
-    Console.print('======================================\n');
-    Console.print(`총구매액             ${receiptInfo.totalQuantity}          ${receiptInfo.totalAmount.toLocaleString('ko-KR')}`);
-    Console.print(`행사할인                            -${receiptInfo.eventDiscount.toLocaleString('ko-KR')}`);
-    Console.print(`멤버십할인                          -${receiptInfo.membershipDiscount.toLocaleString('ko-KR')}`);
-    Console.print(`내실돈                              ${receiptInfo.finalAmount.toLocaleString('ko-KR')}`);
+    Console.print('\n======================================\n');
+    Console.print(`총구매액\t${receiptInfo.totalQuantity}\t\t${receiptInfo.totalAmount.toLocaleString('ko-KR')}`);
+    Console.print(`행사할인\t\t\t-${receiptInfo.eventDiscount.toLocaleString('ko-KR')}`);
+    Console.print(`멤버십할인\t\t\t-${receiptInfo.membershipDiscount.toLocaleString('ko-KR')}`);
+    Console.print(`내실돈\t\t\t\t${receiptInfo.finalAmount.toLocaleString('ko-KR')}`);
   },
 
   printErrorMessage(errorMessage) {
