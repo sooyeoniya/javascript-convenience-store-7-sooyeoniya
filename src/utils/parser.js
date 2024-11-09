@@ -12,9 +12,20 @@ const extractProductsToPurchase = (productsToPurchase) => {
   });
 }
 
+const formatItemName = (itemName) => {
+  if (itemName.length < 4) return `${itemName}\t`;
+  return itemName;
+}
+
+const formatPrice = (price) => {
+  return price.toLocaleString('ko-KR');
+}
+
 const parser = {
   splitEachProduct,
   extractProductsToPurchase,
+  formatItemName,
+  formatPrice,
 }
 
 export default parser;

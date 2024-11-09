@@ -1,5 +1,6 @@
 import { Console } from '@woowacourse/mission-utils';
-import { PROMPT_MESSAGES } from '../constants/constants.js';
+import { PROMPT_MESSAGES, RECEIPT_MESSAGES } from '../constants/constants.js';
+import parser from '../utils/parser.js';
 
 const OutputView = {
   printWelcomeGreetingAndStockInfo(stockInfo) {
@@ -14,35 +15,30 @@ const OutputView = {
     let quentityText = '재고 없음';
     if (productInfo.quantity > 0) quentityText = `${productInfo.quantity}개`;
 
-    const priceText = productInfo.price.toLocaleString('ko-KR');
+    const priceText = parser.formatPrice(productInfo.price);
     Console.print(`- ${productInfo.name} ${priceText}원 ${quentityText} ${promotionText}`);
   },
 
   // TODO: 함수 길이 10으로 줄이기
   printReceipt(receiptInfo) {
-    Console.print('\n==============W 편의점================');
-    Console.print('상품명\t\t수량\t\t금액\n');
+    Console.print(RECEIPT_MESSAGES.HEADER);
 
     receiptInfo.items.forEach((item) => {
-      let name = item.name;
-      if (item.name.length < 4) name = `${item.name}\t`;
-      Console.print(`${name}\t${item.quantity}\t\t${item.itemTotalAmount.toLocaleString('ko-KR')}`);
+      Console.print(`${parser.formatItemName(item.name)}\t${item.quantity}\t\t${parser.formatPrice(item.itemTotalAmount)}`);
     });
 
-    Console.print('\n==============증     정===============\n');
+    Console.print(RECEIPT_MESSAGES.GIFT_LINE);
     receiptInfo.items
       .filter((item) => item.giftCount > 0)
       .forEach((item) => {
-        let name = item.name;
-        if (item.name.length < 4) name = `${item.name}\t`;
-        Console.print(`${name}\t${item.giftCount}`);
+        Console.print(`${parser.formatItemName(item.name)}\t${item.giftCount}`);
       });
 
-    Console.print('\n======================================\n');
-    Console.print(`총구매액\t${receiptInfo.totalQuantity}\t\t${receiptInfo.totalAmount.toLocaleString('ko-KR')}`);
-    Console.print(`행사할인\t\t\t-${receiptInfo.eventDiscount.toLocaleString('ko-KR')}`);
-    Console.print(`멤버십할인\t\t\t-${receiptInfo.membershipDiscount.toLocaleString('ko-KR')}`);
-    Console.print(`내실돈\t\t\t\t${receiptInfo.finalAmount.toLocaleString('ko-KR')}`);
+    Console.print(RECEIPT_MESSAGES.TOTAL_LINE);
+    Console.print(`총구매액\t${receiptInfo.totalQuantity}\t\t${parser.formatPrice(receiptInfo.totalAmount)}`);
+    Console.print(`행사할인\t\t\t-${parser.formatPrice(receiptInfo.eventDiscount)}`);
+    Console.print(`멤버십할인\t\t\t-${parser.formatPrice(receiptInfo.membershipDiscount)}`);
+    Console.print(`내실돈\t\t\t\t${parser.formatPrice(receiptInfo.finalAmount)}`);
   },
 
   printErrorMessage(errorMessage) {

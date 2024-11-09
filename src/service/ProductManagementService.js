@@ -103,7 +103,7 @@ class ProductManagementService {
   // 추가 구매 안내 메시지 답변에 따른 구매할 수량 재계산
   async #showAdditionalPromotionItemsMessage(productName, productQuantity, promotionGetValue) {
     const response = await getUserConfirmation(
-      `현재 ${productName}은(는) ${promotionGetValue}개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`
+      `\n현재 ${productName}은(는) ${promotionGetValue}개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`
     );
     if (response.toUpperCase() === 'Y') return productQuantity + promotionGetValue;
     if (response.toUpperCase() === 'N') return productQuantity;
@@ -121,7 +121,7 @@ class ProductManagementService {
   // 재고 부족 안내 메시지 답변에 따른 구매할 수량 재계산
   async #showLackOfPromotionStockMessage(productName, productQuantity, nonPromotionalQuantity) {
     const response = await getUserConfirmation(
-      `현재 ${productName} ${nonPromotionalQuantity}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`
+      `\n현재 ${productName} ${nonPromotionalQuantity}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`
     );
     if (response.toUpperCase() === 'Y') return productQuantity;
     if (response.toUpperCase() === 'N') return productQuantity - nonPromotionalQuantity;
