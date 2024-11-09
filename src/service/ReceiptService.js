@@ -23,7 +23,7 @@ class ReceiptService {
 
   async processReceipt() {
     this.#calculateReceiptDetails();
-    await this.#calculateMembershipDiscount();
+    await this.#confirmMembershipDiscount();
     this.#calculateFinalAmount();
 
     return this.#receiptInfo;
@@ -34,31 +34,38 @@ class ReceiptService {
     this.#receiptInfo.items.forEach((item) => {
       const price = this.#stock.getProductPrice(item.name);
       item.itemTotalAmount = item.quantity * price;
-
       this.#receiptInfo.totalAmount += item.itemTotalAmount;
       this.#receiptInfo.totalQuantity += item.quantity;
       this.#receiptInfo.eventDiscount += item.giftCount * price;
     });
   }
 
-  // TODO: 함수 길이 10으로 줄이기, indent depth 2로 줄이기
-  async #calculateMembershipDiscount() {
+  async #confirmMembershipDiscount() {
     const response = await getUserConfirmation(PROMPT_MESSAGES.MEMBERSHIP_DISCOUNT);
-    if (response === CONFIRMATION_RESPONSES.YES) {
-      let nonDiscountableAmount = 0;
-      this.#receiptInfo.items.forEach((item) => {
-        if (item.giftCount > 0) {
-          const price = this.#stock.getProductPrice(item.name);
-          const promotionName = this.#stock.getPromotionName(item.name);
-          const promotionValue = this.#promotion.getPromotionBuyPlusGetValue(promotionName);
-          nonDiscountableAmount += price * item.giftCount * promotionValue;
-        }
-      });
-      let membershipDiscount = (this.#receiptInfo.totalAmount - nonDiscountableAmount) * 0.3;
-      membershipDiscount = Math.min(membershipDiscount, 8000);
-      this.#receiptInfo.membershipDiscount = membershipDiscount;
-    }
+    if (response === CONFIRMATION_RESPONSES.YES) this.#calculateMembershipDiscount();
   }
+
+  #calculateMembershipDiscount() {
+    const nonDiscountableAmount = this.#calculateNonDiscountableAmount();
+    let membershipDiscount = (this.#receiptInfo.totalAmount - nonDiscountableAmount) * 0.3;
+    membershipDiscount = Math.min(membershipDiscount, 8000);
+    this.#receiptInfo.membershipDiscount = membershipDiscount;
+  }
+
+  #calculateNonDiscountableAmount() {
+    let nonDiscountableAmount = 0;
+    this.#receiptInfo.items.forEach((item) => {
+      if (item.giftCount > 0) nonDiscountableAmount += this.#calculateGiftDiscountAmount(item);
+    });
+    return nonDiscountableAmount;
+  }
+
+  #calculateGiftDiscountAmount(item) {
+    const price = this.#stock.getProductPrice(item.name);
+    const promotionName = this.#stock.getPromotionName(item.name);
+    const promotionValue = this.#promotion.getPromotionBuyPlusGetValue(promotionName);
+    return price * item.giftCount * promotionValue;
+  }  
 
   #calculateFinalAmount() {
     this.#receiptInfo.finalAmount = this.#receiptInfo.totalAmount - this.#receiptInfo.eventDiscount - this.#receiptInfo.membershipDiscount;
