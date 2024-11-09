@@ -18,16 +18,6 @@ class Stock {
     return this.#stockInfo.find((product) => product.name === productName).price;
   }
 
-  // 현재 상품에 대한 프로모션 재고 정보 반환
-  getProductPromotionStockInfo(productName) {
-    return this.#stockInfo.find((product) => product.name === productName && product.promotion !== null);
-  }
-
-  // 현재 상품에 대한 일반 재고 정보 반환
-  getProductGeneralStockInfo(productName) {
-    return this.#stockInfo.find((product) => product.name === productName && product.promotion === null);
-  }
-
   // 현재 상품에 대한 프로모션 이름 (프로모션 혜택 있는 경우 프로모션 혜택 이름 먼저 반환, 없으면 null 반환)
   getPromotionName(productName) {
     return this.#stockInfo.find((product) => product.name === productName).promotion;
@@ -42,19 +32,16 @@ class Stock {
     return product.quantity;
   }
 
-  // 현재 상품에 대한 일반 재고 수량
-  getGeneralStockQuantity(productName) {
-    const product = this.#stockInfo.find((product) => 
-      product.name === productName && product.promotion === null
-    );
-    return product.quantity;
+  // 존재하는 상품인지 확인
+  checkProductExistence(productName) {
+    return this.#stockInfo.some((product) => product.name === productName);
   }
 
   // {프로모션 재고 수량} > {현재상품수량} 인 경우, 프로모션 재고 업데이트: {프로모션 재고 수량} - {현재상품수량}
   // {프로모션 재고 수량} <= {현재상품수량} 인 경우, 프로모션 재고 우선 차감 후, 나머지 일반 재고 차감
   updatePromotionStockInfo(productName, productQuantity) {
-    const productPromotionStockInfo = this.getProductPromotionStockInfo(productName);
-    const productGeneralStockInfo = this.getProductGeneralStockInfo(productName);
+    const productPromotionStockInfo = this.#getProductPromotionStockInfo(productName);
+    const productGeneralStockInfo = this.#getProductGeneralStockInfo(productName);
     const promotionStockQuantity = productPromotionStockInfo.quantity;
     if (promotionStockQuantity > productQuantity) {
       productPromotionStockInfo.quantity -= productQuantity;
@@ -66,13 +53,18 @@ class Stock {
 
   // 프로모션 미적용 상품에 대한 일반 재고 차감
   updateGeneralStockInfo(productName, productQuantity) {
-    const productGeneralStockInfo = this.getProductGeneralStockInfo(productName);
+    const productGeneralStockInfo = this.#getProductGeneralStockInfo(productName);
     productGeneralStockInfo.quantity -= productQuantity;
   }
 
-  // 존재하는 상품인지 확인
-  checkProductExistence(productName) {
-    return this.#stockInfo.some((product) => product.name === productName);
+  // 현재 상품에 대한 프로모션 재고 정보 반환
+  #getProductPromotionStockInfo(productName) {
+    return this.#stockInfo.find((product) => product.name === productName && product.promotion !== null);
+  }
+
+  // 현재 상품에 대한 일반 재고 정보 반환
+  #getProductGeneralStockInfo(productName) {
+    return this.#stockInfo.find((product) => product.name === productName && product.promotion === null);
   }
 
   // 파일 읽기
