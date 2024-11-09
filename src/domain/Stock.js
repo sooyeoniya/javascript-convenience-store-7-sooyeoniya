@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { STOCK_LABELS } from '../constants/constants.js';
+import { STOCK_LABELS, DELIMITER } from '../constants/constants.js';
 
 class Stock {
   #stockInfo = [];
@@ -85,7 +85,7 @@ class Stock {
 
   // 파일 내용 파싱
   #parseProductInfo(productInfo) {
-    let [name, price, quantity, promotion] = productInfo.split(',');
+    let [name, price, quantity, promotion] = productInfo.split(DELIMITER);
 
     if (promotion === STOCK_LABELS.NULL) promotion = null;
     price = Number(price);

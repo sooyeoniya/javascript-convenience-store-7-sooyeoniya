@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { MissionUtils } from '@woowacourse/mission-utils';
+import { DELIMITER } from '../constants/constants.js';
 
 class Promotion {
   #promotionInfo = [];
@@ -55,7 +56,7 @@ class Promotion {
 
   // 파일 내용 파싱
   #parsePromotionInfo(promotion) {
-    let [name, buy, get, startDate, endDate] = promotion.split(',');
+    let [name, buy, get, startDate, endDate] = promotion.split(DELIMITER);
     buy = Number(buy);
     get = Number(get);
     startDate = new Date(startDate);

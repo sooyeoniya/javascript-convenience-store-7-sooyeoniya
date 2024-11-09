@@ -1,4 +1,6 @@
-export const splitEachProduct = (productsToPurchase, delimiter = ',') => {
+import { DELIMITER } from '../constants/constants.js';
+
+export const splitEachProduct = (productsToPurchase, delimiter = DELIMITER) => {
   return productsToPurchase.split(delimiter).map((product) => product.trim());
 }
 
