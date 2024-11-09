@@ -34,7 +34,12 @@ export const STOCK_LABELS = Object.freeze({
   NO_STOCK: '재고 없음',
 });
 
-export const CONFIRMATION_RESPONSES = {
+export const CONFIRMATION_RESPONSES = Object.freeze({
   YES: 'Y',
   NO: 'N',
-};
+});
+
+export const MEMBERSHIP_DISCOUNT = Object.freeze({
+  MAX_LIMIT: 8000,
+  RATE: 0.3,
+});

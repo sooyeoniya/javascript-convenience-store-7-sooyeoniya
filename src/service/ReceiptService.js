@@ -1,4 +1,4 @@
-import { CONFIRMATION_RESPONSES, PROMPT_MESSAGES } from '../constants/constants.js';
+import { CONFIRMATION_RESPONSES, PROMPT_MESSAGES, MEMBERSHIP_DISCOUNT } from '../constants/constants.js';
 import getUserConfirmation from '../utils/getUserConfirmation.js';
 
 class ReceiptService {
@@ -47,8 +47,8 @@ class ReceiptService {
 
   #calculateMembershipDiscount() {
     const nonDiscountableAmount = this.#calculateNonDiscountableAmount();
-    let membershipDiscount = (this.#receiptInfo.totalAmount - nonDiscountableAmount) * 0.3;
-    membershipDiscount = Math.min(membershipDiscount, 8000);
+    let membershipDiscount = (this.#receiptInfo.totalAmount - nonDiscountableAmount) * MEMBERSHIP_DISCOUNT.RATE;
+    membershipDiscount = Math.min(membershipDiscount, MEMBERSHIP_DISCOUNT.MAX_LIMIT);
     this.#receiptInfo.membershipDiscount = membershipDiscount;
   }
 
