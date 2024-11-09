@@ -28,9 +28,7 @@ class ProductManagementService {
     this.#initProductsInfo(productsInfo);
     for (const { name, quantity } of this.#productsInfo) {
       if (this.#isGeneralProduct(name, quantity)) continue;
-
-      const productInfo = this.#getProductInfo(name);
-      await this.#processPromotionStock(name, quantity, productInfo);
+      await this.#processPromotionStock(name, quantity);
     }
   }
 
@@ -45,17 +43,28 @@ class ProductManagementService {
   }
 
   // 프로모션 적용 상품에 대한 재고 처리 로직
-  async #processPromotionStock(name, quantity, productInfo) {
+  async #processPromotionStock(name, quantity) {
+    const productInfo = this.#getProductInfo(name);
     const productPromotionStockQuantity = this.#stock.getPromotionStockQuantity(name);
     if (productPromotionStockQuantity > quantity) {
-      await this.#offerAdditionalPromotionItems(name, quantity);
-      this.#setGiftCount(productInfo, name, productInfo.quantity);
-      this.#stock.updatePromotionStockInfo(name, productInfo.quantity);
+      await this.#processSufficientPromotionStock(name, quantity, productInfo);
       return;
     }
-    await this.#offerLackOfPromotionStock(name, quantity, productPromotionStockQuantity);
-    this.#setGiftCount(productInfo, name, productPromotionStockQuantity);
-    this.#stock.updatePromotionStockInfo(name, productInfo.quantity);
+    await this.#processInsufficientPromotionStock(name, quantity, productInfo, productPromotionStockQuantity);
+  }
+
+  // 프로모션 재고가 충분한 경우
+  async #processSufficientPromotionStock(productName, productQuantity, productInfo) {
+    await this.#offerAdditionalPromotionItems(productName, productQuantity);
+    this.#setGiftCount(productInfo, productName, productInfo.quantity);
+    this.#stock.updatePromotionStockInfo(productName, productInfo.quantity);
+  }
+
+  // 프로모션 재고가 충분하지 않은 경우
+  async #processInsufficientPromotionStock(productName, productQuantity, productInfo, productPromotionStockQuantity) {
+    await this.#offerLackOfPromotionStock(productName, productQuantity, productPromotionStockQuantity);
+    this.#setGiftCount(productInfo, productName, productPromotionStockQuantity);
+    this.#stock.updatePromotionStockInfo(productName, productInfo.quantity);
   }
 
   // 프로모션 미적용 상품에 대한 증정품 개수 초기화
