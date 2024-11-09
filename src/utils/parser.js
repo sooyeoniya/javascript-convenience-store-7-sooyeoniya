@@ -1,5 +1,5 @@
-export const splitEachProduct = (productsToPurchase) => {
-  return productsToPurchase.split(',').map((product) => product.trim());
+export const splitEachProduct = (productsToPurchase, delimiter = ',') => {
+  return productsToPurchase.split(delimiter).map((product) => product.trim());
 }
 
 export const extractProductsToPurchase = (productsToPurchase) => {
@@ -13,7 +13,8 @@ export const extractProductsToPurchase = (productsToPurchase) => {
 }
 
 export const formatItemName = (itemName) => {
-  if (itemName.length < 4) return `${itemName}\t`;
+  const ITEM_NAME_TAB_LENGTH = 4;
+  if (itemName.length < ITEM_NAME_TAB_LENGTH) return `${itemName}\t`;
   return itemName;
 }
 
