@@ -25,7 +25,7 @@ class Promotion {
     const promotion = this.#getPromotionInfoByName(promotionName);
     return promotion.get;
   }
-  
+
   // 해당하는 프로모션에 대한 buy + get 값 반환
   getPromotionBuyPlusGetValue(promotionName) {
     const promotion = this.#getPromotionInfoByName(promotionName);
