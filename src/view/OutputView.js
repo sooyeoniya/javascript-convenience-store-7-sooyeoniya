@@ -1,6 +1,6 @@
 import { Console } from '@woowacourse/mission-utils';
 import { PROMPT_MESSAGES, RECEIPT_LABELS, RECEIPT_MESSAGES, STOCK_LABELS } from '../constants/constants.js';
-import { formatPrice, formatItemName } from '../utils/parser.js';
+import { formatPrice, formatItemName } from '../utils/parserUtils.js';
 
 const OutputView = {
   printWelcomeGreetingAndStockInfo(stockInfo) {

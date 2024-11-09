@@ -7,7 +7,7 @@ import ProductManagementService from '../service/ProductManagementService.js';
 import validateProductsToPurchase from '../validations/validateProductsToPurchase.js';
 import getUserConfirmation from '../utils/getUserConfirmation.js';
 import { CONFIRMATION_RESPONSES, PROMPT_MESSAGES } from '../constants/constants.js';
-import { splitEachProduct } from '../utils/parser.js';
+import { splitEachProduct } from '../utils/parserUtils.js';
 
 class ConvenienceStoreController {
   #stock;

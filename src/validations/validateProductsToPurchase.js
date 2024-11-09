@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES } from '../constants/constants.js';
-import { extractProductsToPurchase } from '../utils/parser.js';
+import extractProductsToPurchase from '../utils/extractProductsToPurchase.js';
 
 const validateArrayFormat = (productsToPurchase) => {
   const formatRegex = /^\[([^\[\]-]+)-(\d+)\]$/;
