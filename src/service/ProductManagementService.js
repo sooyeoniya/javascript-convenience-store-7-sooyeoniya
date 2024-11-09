@@ -123,14 +123,6 @@ class ProductManagementService {
     if (response === CONFIRMATION_RESPONSES.NO) return productQuantity - nonPromotionalQuantity;
   }
 
-  // 프로모션 적용 가능한 상품인지 아닌지 확인
-  #isAvailablePromotion(productName) {
-    const promotionInfo = this.#promotion.getPromotionInfo();
-    const promotionName = this.#stock.getPromotionName(productName);
-
-    return promotionName && promotionInfo.some((promotion) => promotion.name === promotionName && promotion.isAvailable);
-  }
-
   // 총 재고 수량 계산
   #calculateTotalQuantity(productName) {
     if (this.#isAvailablePromotion(productName)) {
@@ -139,11 +131,19 @@ class ProductManagementService {
     return this.#sumProductQuantity((product) => product.name === productName && product.promotion === null);
   }
 
+  // 프로모션 적용 가능한 상품인지 아닌지 확인
+  #isAvailablePromotion(productName) {
+    const promotionInfo = this.#promotion.getPromotionInfo();
+    const promotionName = this.#stock.getPromotionName(productName);
+
+    return promotionName && promotionInfo.some((promotion) => promotion.name === promotionName && promotion.isAvailable);
+  }
+
   // 특정 조건에 대한 상품 수량 덧셈
   #sumProductQuantity(condition) {
-    return this.#stock.getStockInfo().reduce((total, product) => {
-      if (condition(product)) total += product.quantity;
-      return total;
+    return this.#stock.getStockInfo().reduce((totalQuantity, product) => {
+      if (condition(product)) totalQuantity += product.quantity;
+      return totalQuantity;
     }, 0);
   }
 
