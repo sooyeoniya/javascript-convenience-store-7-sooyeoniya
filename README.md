@@ -92,7 +92,7 @@
   - [x] 통합 테스트
       - 기능 및 예외 테스트
 
-  - [ ] 단위 테스트
+  - [x] 단위 테스트
 
       - [x] **Stock 클래스 테스트**
         - getStockInfo()
@@ -121,7 +121,38 @@
 ## 🏛️ 프로젝트 구조
 ```
 __tests__
+├── ApplicationTest.js
+├── ProductManagementServiceTest.js
+├── PromotionTest.js
+├── ReceiptServiceTest.js
+└── StockTest.js
+
+public
+├── products.md
+└── promotions.md
 
 src
-
+├── App.js
+├── index.js
+├── constants
+│   └── constants.js
+├── controller
+│   └── ConvenienceStoreController.js
+├── domain
+│   ├── Promotion.js
+│   └── Stock.js
+├── service
+│   ├── ProductManagementService.js
+│   └── ReceiptService.js
+├── utils
+│   ├── extractProductsToPurchase.js
+│   ├── getUserConfirmation.js
+│   ├── parserUtils.js
+│   └── readFileData.js
+├── validations
+│   ├── validateConfirmationResponse.js
+│   └── validateProductsToPurchase.js
+└── view
+    ├── InputView.js
+    └── OutputView.js
 ```
