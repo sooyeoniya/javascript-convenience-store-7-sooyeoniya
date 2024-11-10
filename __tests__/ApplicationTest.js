@@ -132,28 +132,28 @@ describe('편의점', () => {
   });
 
   // 기존 테스트 코드
-  test("여러 개의 일반 상품 구매", async () => {
+  test('여러 개의 일반 상품 구매', async () => {
     await run({
-      inputs: ["[비타민워터-3],[물-2],[정식도시락-2]", "N", "N"],
-      expectedIgnoringWhiteSpaces: ["내실돈18,300"],
+      inputs: ['[비타민워터-3],[물-2],[정식도시락-2]', 'N', 'N'],
+      expectedIgnoringWhiteSpaces: ['내실돈18,300'],
     });
   });
 
-  test("기간에 해당하지 않는 프로모션 적용", async () => {
-    mockNowDate("2024-02-01");
+  test('기간에 해당하지 않는 프로모션 적용', async () => {
+    mockNowDate('2024-02-01');
 
     await run({
-      inputs: ["[감자칩-2]", "N", "N"],
-      expectedIgnoringWhiteSpaces: ["내실돈3,000"],
+      inputs: ['[감자칩-2]', 'N', 'N'],
+      expectedIgnoringWhiteSpaces: ['내실돈3,000'],
     });
   });
 
-  test("예외 테스트", async () => {
+  test('예외 테스트', async () => {
     await runExceptions({
-      inputs: ["[컵라면-12]", "N", "N"],
+      inputs: ['[컵라면-12]', 'N', 'N'],
       inputsToTerminate: INPUTS_TO_TERMINATE,
       expectedErrorMessage:
-        "[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.",
+        '[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.',
     });
   });
 
