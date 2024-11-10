@@ -109,7 +109,7 @@
         - getPromotionGetValue()
         - getPromotionBuyPlusGetValue()
       
-      - [ ] **ProductManagementService 클래스 테스트**
+      - [x] **ProductManagementService 클래스 테스트**
         - initProductsInfo()
         - getProductsInfo()
         - hasSufficientStock()
