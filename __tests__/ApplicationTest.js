@@ -258,8 +258,8 @@ describe('편의점', () => {
     ['하이픈(-) 없는 경우', ['[비타민워터5]', 'N', 'N'], ERROR_MESSAGES.INPUT_FORM],
     ['수량이 문자인 경우', ['[컵라면-주세요]', 'N', 'N'], ERROR_MESSAGES.INPUT_FORM],
     ['공백이 포함된 경우', ['[ 감자칩 - 4 ]', 'N', 'N'], ERROR_MESSAGES.INPUT_FORM],
-    ['중복된 상품명이 존재하는 경우', ['[사이다-1],[사이다-2]', 'N', 'N'], ERROR_MESSAGES.DUPLICATE_PRODUCTS_NAME],
-    ['수량이 0인 경우', ['[사이다-0]', 'N', 'N'], ERROR_MESSAGES.QUANTITY_IS_LESS_THAN_ZERO],
+    ['중복된 상품명이 존재하는 경우', ['[사이다-1],[사이다-2]', 'N', 'N'], ERROR_MESSAGES.OTHER_ERRORS],
+    ['수량이 0인 경우', ['[사이다-0]', 'N', 'N'], ERROR_MESSAGES.OTHER_ERRORS],
     ['존재하지 않는 상품인 경우', ['[정식도시락-1],[없는상품-2],[컵라면-3]', 'N', 'N'], ERROR_MESSAGES.NOT_EXIST],
     ['수량이 재고보다 초과된 경우', ['[감자칩-2],[컵라면-12]', 'N', 'N'], ERROR_MESSAGES.QUANTITY_IS_OVER_STOCK],
   ])('예외 테스트: %s', async (_, inputs) => {

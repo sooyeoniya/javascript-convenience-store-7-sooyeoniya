@@ -13,13 +13,13 @@ const validateDuplicateProductsName = (productsInfo) => {
   const productNames = new Set();
 
   productsInfo.forEach(({ name }) => {
-    if (productNames.has(name)) throw new Error(ERROR_MESSAGES.DUPLICATE_PRODUCTS_NAME);
+    if (productNames.has(name)) throw new Error(ERROR_MESSAGES.OTHER_ERRORS);
     productNames.add(name);
   })
 }
 
 const validateQuantityFormat = (quantity) => {
-  if (quantity <= 0) throw new Error(ERROR_MESSAGES.QUANTITY_IS_LESS_THAN_ZERO);
+  if (quantity <= 0) throw new Error(ERROR_MESSAGES.OTHER_ERRORS);
 }
 
 const validateProductExistence = (name, stock) => {

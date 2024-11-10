@@ -11,11 +11,7 @@ export const ERROR_MESSAGES = Object.freeze({
   INPUT_FORM: '[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.',
   NOT_EXIST: '[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.',
   QUANTITY_IS_OVER_STOCK: '[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.',
-
-  // TODO: 하나로 통합하기
-  USER_CONFIRM: '[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.',
-  DUPLICATE_PRODUCTS_NAME: '[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.',
-  QUANTITY_IS_LESS_THAN_ZERO: '[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.',
+  OTHER_ERRORS: '[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.',
 });
 
 export const RECEIPT_MESSAGES = Object.freeze({

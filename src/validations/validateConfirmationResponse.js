@@ -2,7 +2,7 @@ import { ERROR_MESSAGES, CONFIRMATION_RESPONSES } from '../constants/constants.j
 
 const validateConfirmationResponse = (userInput) => {
   if (![CONFIRMATION_RESPONSES.YES, CONFIRMATION_RESPONSES.NO].includes(userInput.toUpperCase())) {
-    throw new Error(ERROR_MESSAGES.USER_CONFIRM);
+    throw new Error(ERROR_MESSAGES.OTHER_ERRORS);
   }
 
   return userInput.toUpperCase();
