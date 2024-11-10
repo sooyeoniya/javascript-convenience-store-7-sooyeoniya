@@ -13,21 +13,21 @@ class Stock {
     return this.#stockInfo;
   }
 
-  // 현재 상품에 대한 가격 반환
+  // 특정 상품에 대한 가격 반환
   getProductPrice(productName) {
     return this.#stockInfo.find((product) => product.name === productName).price;
   }
 
-  // 현재 상품에 대한 프로모션 재고 수량 반환
+  // 프로모션 혜택 상품에 대한 프로모션 재고 수량 반환
   getPromotionStockQuantity(productName) {
     const promotionName = this.getPromotionName(productName);
     const product = this.#stockInfo.find((product) => 
       product.name === productName && promotionName && product.promotion === promotionName
     );
-    return product.quantity;
+    return product?.quantity;
   }
 
-  // 현재 상품에 대한 프로모션 이름 반환 (프로모션 혜택 있는 경우 프로모션 혜택 이름 먼저 반환, 없으면 null 반환)
+  // 특정 상품에 대한 프로모션 이름 반환 (프로모션 혜택 있는 경우 프로모션 혜택 이름 먼저 반환, 없으면 null 반환)
   getPromotionName(productName) {
     return this.#stockInfo.find((product) => product.name === productName).promotion;
   }

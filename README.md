@@ -94,8 +94,14 @@
 
   - [ ] 단위 테스트
 
-      - [ ] **Stock 클래스 테스트**
-        - 
+      - [x] **Stock 클래스 테스트**
+        - getStockInfo()
+        - getProductPrice()
+        - getPromotionStockQuantity()
+        - getPromotionName()
+        - checkProductExistence()
+        - updatePromotionStockInfo()
+        - updateGeneralStockInfo()
       
       - [ ] **Promotion 클래스 테스트**
         - 
