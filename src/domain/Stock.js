@@ -82,12 +82,7 @@ class Stock {
 
   // 해당 프로모션 상품 항목 바로 뒤에 삽입
   #addGeneralStockInfo(name, price, promotionIndex) {
-    this.#stockInfo.splice(promotionIndex + 1, 0, {
-      name,
-      price,
-      quantity: 0,
-      promotion: null,
-    });
+    this.#stockInfo.splice(promotionIndex + 1, 0, { name, price, quantity: 0, promotion: null });
   }
 
   // 현재 상품에 대한 프로모션 재고 정보 반환
