@@ -57,17 +57,19 @@ class Stock {
   }
 
   // 재고에 있는 상품 중에 promotion null이 없는 경우, 상품 수량 0으로 일반 재고 새로 추가
-  #hasGeneralStockInfo() {
+  #checkAndAddGeneralStockInfo() {
     const productNames = [...new Set(this.#stockInfo.map((product) => product.name))];
+    productNames.forEach((name) => this.#hasGeneralStockInfo(name));
+  }
 
-    productNames.forEach((name) => {
-      const hasGeneralStock = this.#stockInfo.some((product) => product.name === name && product.promotion === null);
-      if (!hasGeneralStock) {
-        const productWithPromotion = this.#getProductPromotionStockInfo(name);
-        const promotionIndex = this.#getPromotionIndex(name);
-        this.#addGeneralStockInfo(name, productWithPromotion.price, promotionIndex);
-      }
-    });
+  // promotion null 즉, 일반 재고가 있는지 확인
+  #hasGeneralStockInfo(productName) {
+    const hasGeneralStock = this.#stockInfo.some((product) => product.name === productName && product.promotion === null);
+    if (!hasGeneralStock) {
+      const productWithPromotion = this.#getProductPromotionStockInfo(productName);
+      const promotionIndex = this.#getPromotionIndex(productName);
+      this.#addGeneralStockInfo(productName, productWithPromotion.price, promotionIndex);
+    }
   }
 
   // 해당 프로모션 상품의 위치 반환
@@ -117,7 +119,7 @@ class Stock {
       const product = this.#parseProductInfo(productInfo);
       if (product) this.#stockInfo.push(product);
     });
-    this.#hasGeneralStockInfo();
+    this.#checkAndAddGeneralStockInfo();
   }
 }
 
