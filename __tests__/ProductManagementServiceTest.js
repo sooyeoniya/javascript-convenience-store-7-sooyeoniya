@@ -85,9 +85,6 @@ describe('ProductManagementService 클래스 테스트', () => {
   });
 
   test('processProducts(): 프로모션 미적용 상품 처리', async () => {
-    // given
-    stock.updateGeneralStockInfo.mockImplementation();
-
     // when
     await productManagementService.processProducts();
 
