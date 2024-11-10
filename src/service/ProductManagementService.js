@@ -12,6 +12,11 @@ class ProductManagementService {
     this.#productsInfo = [];
   }
 
+  // 구매할 상품 및 수량 저장
+  initProductsInfo(productsInfo) {
+    this.#productsInfo = productsInfo;
+  }
+
   // 구매할 상품 및 수량 전체 정보 반환
   getProductsInfo() {
     return this.#productsInfo;
@@ -24,8 +29,7 @@ class ProductManagementService {
   }
 
   // 구매할 상품들에 대한 처리 로직
-  async processProducts(productsInfo) {
-    this.#initProductsInfo(productsInfo);
+  async processProducts() {
     for (const { name, quantity } of this.#productsInfo) {
       if (this.#isGeneralProduct(name, quantity)) continue;
       await this.#processPromotionStock(name, quantity);
@@ -152,11 +156,6 @@ class ProductManagementService {
   // 해당하는 상품에 대한 상품 및 수량 정보 반환
   #getProductInfo(productName) {
     return this.#productsInfo.find((product) => product.name === productName);
-  }
-
-  // 구매할 상품 및 수량 저장
-  #initProductsInfo(productsInfo) {
-    this.#productsInfo = productsInfo;
   }
 }
 

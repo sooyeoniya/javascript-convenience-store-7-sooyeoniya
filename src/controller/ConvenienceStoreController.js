@@ -30,12 +30,12 @@ class ConvenienceStoreController {
 
   async processPurchase() {
     OutputView.printWelcomeGreetingAndStockInfo(this.#stock.getStockInfo());
-
     const productManagementService = new ProductManagementService(this.#stock, this.#promotion);
     const receiptService = new ReceiptService(this.#stock, this.#promotion, productManagementService);
 
     const productsInfo = await this.#validateInputAsync(productManagementService);
-    await productManagementService.processProducts(productsInfo);
+    productManagementService.initProductsInfo(productsInfo);
+    await productManagementService.processProducts();
     
     const receiptInfo = await receiptService.processReceipt();
     OutputView.printReceipt(receiptInfo);
