@@ -95,41 +95,27 @@ describe('ProductManagementService 클래스 테스트', () => {
     expect(stock.updateGeneralStockInfo).toHaveBeenCalledWith('에너지바', 5);
   });
 
-  test('processProducts(): 프로모션 적용 상품 처리 - 충분한 재고가 있는 경우', async () => {
+  it.each([
+    ['충분한 재고가 있을 때, 프로모션 혜택 적용 상품 추가 구매하는 경우', 'MD추천상품', 9, 1, 1, 2, CONFIRMATION_RESPONSES.YES, '오렌지주스', 4],
+    ['충분한 재고가 있을 때, 프로모션 혜택 적용 상품 추가 구매하지 않는 경우', 'MD추천상품', 9, 1, 1, 2, CONFIRMATION_RESPONSES.NO, '오렌지주스', 3],
+    ['재고가 부족할 때, 프로모션 혜택 적용 안되는 수량을 구매하는 경우', '탄산2+1', 10, 2, 1, 3, CONFIRMATION_RESPONSES.YES, '콜라', 11],
+    ['재고가 부족할 때, 프로모션 혜택 적용 안되는 수량을 구매하지 않는 경우', '탄산2+1', 10, 2, 1, 3, CONFIRMATION_RESPONSES.NO, '콜라', 9],
+  ])('processProducts(): 프로모션 적용 상품 처리 - %s', async (_, promotionName, promotionStockQuantity, buy, get, buyPlusGet, confirmMessage, productName, expectedQuantity) => {
     // given
-    stock.getPromotionName.mockReturnValue('MD추천상품');
-    stock.getPromotionStockQuantity.mockReturnValue(9);
-    promotion.getPromotionBuyValue.mockReturnValue(1);
-    promotion.getPromotionGetValue.mockReturnValue(1);
-    promotion.getPromotionBuyPlusGetValue.mockReturnValue(2);
+    stock.getPromotionName.mockReturnValue(promotionName);
+    stock.getPromotionStockQuantity.mockReturnValue(promotionStockQuantity);
+    promotion.getPromotionBuyValue.mockReturnValue(buy);
+    promotion.getPromotionGetValue.mockReturnValue(get);
+    promotion.getPromotionBuyPlusGetValue.mockReturnValue(buyPlusGet);
 
-    // 프로모션 혜택 적용 상품 추가 구매 안함 (N)
-    getUserConfirmation.mockResolvedValue(CONFIRMATION_RESPONSES.NO);
+    // 프로모션 혜택 적용 상품 추가 구매 여부 or 프로모션 혜택 적용 안되는 수량 구매 여부
+    getUserConfirmation.mockResolvedValue(confirmMessage);
 
     // when
     await productManagementService.processProducts();
 
     // then
-    expect(stock.updatePromotionStockInfo).toHaveBeenCalledWith('오렌지주스', 3);
-    expect(getUserConfirmation).toHaveBeenCalled();
-  });
-
-  test('processProducts(): 프로모션 적용 상품 처리 - 재고가 부족한 경우', async () => {
-    // given
-    stock.getPromotionName.mockReturnValue('탄산2+1');
-    stock.getPromotionStockQuantity.mockReturnValue(10);
-    promotion.getPromotionBuyValue.mockReturnValue(2);
-    promotion.getPromotionGetValue.mockReturnValue(1);
-    promotion.getPromotionBuyPlusGetValue.mockReturnValue(3);
-
-    // 프로모션 재고 부족하여 프로모션 혜택 적용 안되는 수량이 있어도 구매함 (Y)
-    getUserConfirmation.mockResolvedValue(CONFIRMATION_RESPONSES.YES);
-
-    // when
-    await productManagementService.processProducts();
-
-    // then
-    expect(stock.updatePromotionStockInfo).toHaveBeenCalledWith('콜라', 11);
+    expect(stock.updatePromotionStockInfo).toHaveBeenCalledWith(productName, expectedQuantity);
     expect(getUserConfirmation).toHaveBeenCalled();
   });
 });
