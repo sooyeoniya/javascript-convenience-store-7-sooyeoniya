@@ -64,18 +64,23 @@ class Stock {
       const hasGeneralStock = this.#stockInfo.some((product) => product.name === name && product.promotion === null);
       if (!hasGeneralStock) {
         const productWithPromotion = this.#getProductPromotionStockInfo(name);
-        const lastPromotionIndex = this.#stockInfo
-          .map((product, index) => ({ product, index }))
-          .filter(({ product }) => product.name === name && product.promotion !== null)
-          .slice(-1)[0].index;
-        this.#addGeneralStockInfo(name, productWithPromotion.price, lastPromotionIndex);
+        const promotionIndex = this.#getPromotionIndex(name);
+        this.#addGeneralStockInfo(name, productWithPromotion.price, promotionIndex);
       }
     });
   }
 
+  // 해당 프로모션 상품의 위치 반환
+  #getPromotionIndex(productName) {
+    return this.#stockInfo
+      .map((product, index) => ({ product, index }))
+      .filter(({ product }) => product.name === productName && product.promotion !== null)
+      .slice(-1)[0].index;
+  }
+
   // 해당 프로모션 상품 항목 바로 뒤에 삽입
-  #addGeneralStockInfo(name, price, lastPromotionIndex) {
-    this.#stockInfo.splice(lastPromotionIndex + 1, 0, {
+  #addGeneralStockInfo(name, price, promotionIndex) {
+    this.#stockInfo.splice(promotionIndex + 1, 0, {
       name,
       price,
       quantity: 0,
