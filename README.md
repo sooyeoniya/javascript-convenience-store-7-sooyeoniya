@@ -115,7 +115,7 @@
         - hasSufficientStock()
         - processProducts()
 
-      - [ ] **ReceiptService 클래스 테스트**
+      - [x] **ReceiptService 클래스 테스트**
         - processReceipt()
 
 ## 🏛️ 프로젝트 구조
