@@ -12,6 +12,7 @@ describe('Stock 클래스 테스트', () => {
       '콜라,1000,10,탄산2+1',
       '콜라,1000,10,null',
       '오렌지주스,1800,9,MD추천상품',
+      '오렌지주스,1800,0,null',
       '에너지바,2000,5,null',
     ]);
     stock = new Stock();
@@ -30,6 +31,7 @@ describe('Stock 클래스 테스트', () => {
       { name: '콜라', price: 1000, quantity: 10, promotion: '탄산2+1' },
       { name: '콜라', price: 1000, quantity: 10, promotion: null },
       { name: '오렌지주스', price: 1800, quantity: 9, promotion: 'MD추천상품' },
+      { name: '오렌지주스', price: 1800, quantity: 0, promotion: null },
       { name: '에너지바', price: 2000, quantity: 5, promotion: null },
     ]);
   });
