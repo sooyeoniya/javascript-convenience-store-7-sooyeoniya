@@ -103,8 +103,11 @@
         - updatePromotionStockInfo()
         - updateGeneralStockInfo()
       
-      - [ ] **Promotion 클래스 테스트**
-        - 
+      - [x] **Promotion 클래스 테스트**
+        - getPromotionInfo()
+        - getPromotionBuyValue()
+        - getPromotionGetValue()
+        - getPromotionBuyPlusGetValue()
       
       - [ ] **ProductManagementService 클래스 테스트**
         - 
