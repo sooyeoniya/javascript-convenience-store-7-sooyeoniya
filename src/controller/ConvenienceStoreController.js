@@ -1,0 +1,56 @@
+import Stock from '../domain/Stock.js';
+import Promotion from '../domain/Promotion.js';
+import InputView from '../view/InputView.js';
+import OutputView from '../view/OutputView.js';
+import ReceiptService from '../service/ReceiptService.js';
+import ProductManagementService from '../service/ProductManagementService.js';
+import validateProductsToPurchase from '../validations/validateProductsToPurchase.js';
+import getUserConfirmation from '../utils/getUserConfirmation.js';
+import { CONFIRMATION_RESPONSES, PROMPT_MESSAGES } from '../constants/constants.js';
+import { splitEachProduct } from '../utils/parserUtils.js';
+
+class ConvenienceStoreController {
+  #stock;
+  #promotion;
+
+  constructor() {
+    this.#stock = new Stock();
+    this.#promotion = new Promotion();
+  }
+
+  async start() {
+    await this.processPurchase();
+
+    let additionalPurchase = await getUserConfirmation(PROMPT_MESSAGES.ADDITIONAL_PURCHASE);
+    while (additionalPurchase === CONFIRMATION_RESPONSES.YES) {
+      await this.processPurchase();
+      additionalPurchase = await getUserConfirmation(PROMPT_MESSAGES.ADDITIONAL_PURCHASE);
+    }
+  }
+
+  async processPurchase() {
+    OutputView.printWelcomeGreetingAndStockInfo(this.#stock.getStockInfo());
+    const productManagementService = new ProductManagementService(this.#stock, this.#promotion);
+    const receiptService = new ReceiptService(this.#stock, this.#promotion, productManagementService);
+
+    const productsInfo = await this.#validateInputAsync(productManagementService);
+    productManagementService.initProductsInfo(productsInfo);
+    await productManagementService.processProducts();
+    
+    const receiptInfo = await receiptService.processReceipt();
+    OutputView.printReceipt(receiptInfo);
+  }
+
+  async #validateInputAsync(productManagementService) {
+    try {
+      const productsToPurchase = await InputView.readProductsInfoAsync();
+      const parsedProductsToPurchase = splitEachProduct(productsToPurchase);
+      return validateProductsToPurchase(parsedProductsToPurchase, this.#stock, productManagementService);
+    } catch (error) {
+      OutputView.printErrorMessage(error.message);
+      return this.#validateInputAsync(productManagementService);
+    }
+  }
+}
+
+export default ConvenienceStoreController;
