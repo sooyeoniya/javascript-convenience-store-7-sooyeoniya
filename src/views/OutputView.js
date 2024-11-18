@@ -14,13 +14,13 @@ const OutputView = {
     stockInfo.forEach((productInfo) => {
       const price = parser.parseThousandComma(productInfo.price);
       
-      let quantity = productInfo.quantity;
-      if (quantity === 0) quantity = '재고 없음';
+      let quantity = `${productInfo.quantity}개`;
+      if (productInfo.quantity === 0) quantity = '재고 없음';
 
       let promotion = productInfo.promotion;
-      if (promotion === null) promotion = '';
+      if (productInfo.promotion === null) promotion = '';
 
-      Console.print(`- ${productInfo.name} ${price}원 ${quantity}개 ${promotion}`);
+      Console.print(`- ${productInfo.name} ${price}원 ${quantity} ${promotion}`);
     });
   },
 }
