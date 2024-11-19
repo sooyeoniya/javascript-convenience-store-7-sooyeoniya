@@ -23,6 +23,10 @@ const OutputView = {
       Console.print(`- ${productInfo.name} ${price}원 ${quantity} ${promotion}`);
     });
   },
+
+  printErrorMessage(errorMessage) {
+    Console.print(errorMessage);
+  }
 }
 
 export default OutputView;
