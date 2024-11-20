@@ -1,4 +1,5 @@
 import Stock from '../domains/Stock.js';
+import ProductsManagementService from '../services/ProductsManagementService.js';
 import parser from '../utils/parser.js';
 
 /**
@@ -27,26 +28,30 @@ const validateExistProduct = (name, stockInstance) => {
 
 /**
  * 수량 초과하는지 확인
- * @param {number} quantity 
+ * @param {string} name
+ * @param {number} quantity
+ * @param {ProductsManagementService} productManager
  */
-const validateExcessQuantity = (quantity) => {
-
+const validateExcessQuantity = (name, quantity, productManager) => {
+  if (productManager.checkExcessQuantity(name, quantity)) {
+    throw new Error('[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.');
+  }
 }
 
 /**
  * 
  * @param {string} productsDetails 
- * @param {Stock} stockInstance 
- * @returns 
+ * @param {ProductsManagementService} productManager 
+ * @returns {Array<{ name: string, quantity: number }>}
  */
-const validateProductsDetails = (productsDetails, stockInstance) => {
+const validateProductsDetails = (productsDetails, stockInstance, productManager) => {
   const parsedProductsDetails = parser.parseStringToArray(productsDetails);
   validateInputForm(parsedProductsDetails);
 
   const productsInfo = parser.parseProductsDetails(parsedProductsDetails);
   productsInfo.forEach(({ name, quantity }) => {
     validateExistProduct(name, stockInstance);
-    validateExcessQuantity(quantity);
+    validateExcessQuantity(name, quantity, productManager);
   });
 
   return productsInfo;

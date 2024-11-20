@@ -12,6 +12,15 @@ class Promotion {
     return this.#promotionInfo;
   }
 
+  /**
+   * 해당 프로모션 기간인지 확인, #promotionInfo에 존재하면 현재 적용 가능한 프로모션임
+   * promotionName이 존재하지 않으면 false, promotionName이 존재하면 true 반환
+   * @returns {boolean}
+   */
+  hasPromotion(promotionName) {
+    return this.#promotionInfo.some((promotion) => promotion.name === promotionName);  
+  }
+
   #checkPromotionPeriod(startDate, endDate) {
     const currentDate = DateTimes.now();
     return currentDate >= startDate && currentDate <= endDate;

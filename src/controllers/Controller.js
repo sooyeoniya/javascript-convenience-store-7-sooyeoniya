@@ -18,18 +18,22 @@ class Controller {
     OutputView.printWelcomeGreeting();
     OutputView.printStockInfo(this.#stock.getStockInfo());
 
-    const productsInfo = await this.#validateProductsDetailsAsync();
-    const productManager = new ProductsManagementService(this.#stock);
-
+    const productManager = new ProductsManagementService(this.#stock, this.#promotion);
+    const productsInfo = await this.#validateProductsDetailsAsync(productManager);
   }
 
-  async #validateProductsDetailsAsync() {
+  /**
+   * 
+   * @param {ProductsManagementService} productManager 
+   * @returns {Array<{ name: string, quantity: number }>}
+   */
+  async #validateProductsDetailsAsync(productManager) {
     try {
       const productsDetails = await InputView.readProductsDetailsAsync();
-      return validateProductsDetails(productsDetails, this.#stock);
+      return validateProductsDetails(productsDetails, this.#stock, productManager);
     } catch (error) {
       OutputView.printErrorMessage(error.message);
-      return this.#validateProductsDetailsAsync();
+      return await this.#validateProductsDetailsAsync(productManager);
     }
   }
 }

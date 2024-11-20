@@ -146,6 +146,16 @@ describe('편의점', () => {
     });
   });
 
+  test('프로모션 기간에 해당하지 않는 상품 재고 수량 초과', async () => {
+    mockNowDate('2024-02-01');
+
+    await runExceptions({
+      inputs: ['[감자칩-6]', 'N', 'N'],
+      inputsToTerminate: INPUTS_TO_TERMINATE,
+      expectedErrorMessage: '[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.',
+    });
+  })
+
   test.each([
     ['입력 형식 오류 (1)', ['[컵라면-12', 'N', 'N'], '[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.'],
     ['입력 형식 오류 (2)', ['컵라면-12]', 'N', 'N'], '[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.'],

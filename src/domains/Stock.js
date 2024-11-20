@@ -12,6 +12,55 @@ class Stock {
   }
 
   /**
+   * 해당 상품에 대한 프로모션 정보 반환
+   * @param {string} productName 
+   * @returns {string | null}
+   */
+  getPromotionName(productName) {
+    return this.#stockInfo.find(({ name }) => name === productName).promotion;
+  }
+
+  /**
+   * 해당 상품의 일반 재고 수량 반환
+   * @param {string} productName 
+   * @returns {number}
+   */
+  getGeneralStockQuantity(productName) {
+    return this.#stockInfo.find(({ name, promotion }) => name === productName && promotion === null).quantity;
+  }
+
+  /**
+   * 해당 상품의 프로모션 재고 수량 반환
+   * @param {string} productName 
+   * @returns {number}
+   */
+  getPromotionStockQuantity(productName) {
+    return this.#stockInfo.find(({ name, promotion }) => name === productName && promotion !== null).quantity;
+  }
+
+  /**
+   * 프로모션 혜택 적용 상품: (프로모션 재고 + 일반 재고)에서 수량 초과되는지 확인
+   * @param {string} productName 
+   * @param {number} productQuantity 
+   * @returns {boolean}
+   */
+  checkPromotionAndGeneralStockQuantity(productName, productQuantity) {
+    const stockQuantity = this.getPromotionStockQuantity(productName) + this.getGeneralStockQuantity(productName);
+    return stockQuantity < productQuantity;
+  }
+
+  /**
+   * 프로모션 혜택 미적용 상품: 일반 재고에서 수량 초과되는지 확인
+   * @param {string} productName 
+   * @param {number} productQuantity 
+   * @returns {boolean}
+   */
+  checkGeneralStockQuantity(productName, productQuantity) {
+    const stockQuantity = this.getGeneralStockQuantity(productName);
+    return stockQuantity < productQuantity;
+  }
+
+  /**
    * 존재하는 상품인지 확인
    * @param {string} productName 
    * @returns 
