@@ -1,3 +1,4 @@
+import Stock from '../domains/Stock.js';
 import parser from '../utils/parser.js';
 
 /**
@@ -16,9 +17,12 @@ const validateInputForm = (productsDetails) => {
 /**
  * 존재하는 상품인지 확인
  * @param {string} name
+ * @param {Stock} stockInstance
  */
-const validateExistProduct = (name) => {
-  
+const validateExistProduct = (name, stockInstance) => {
+  if (!stockInstance.checkProductExists(name)) {
+    throw new Error('[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.');
+  }
 }
 
 /**
@@ -29,13 +33,19 @@ const validateExcessQuantity = (quantity) => {
 
 }
 
-const validateProductsDetails = (productsDetails) => {
+/**
+ * 
+ * @param {string} productsDetails 
+ * @param {Stock} stockInstance 
+ * @returns 
+ */
+const validateProductsDetails = (productsDetails, stockInstance) => {
   const parsedProductsDetails = parser.parseStringToArray(productsDetails);
   validateInputForm(parsedProductsDetails);
 
   const productsInfo = parser.parseProductsDetails(parsedProductsDetails);
   productsInfo.forEach(({ name, quantity }) => {
-    validateExistProduct(name);
+    validateExistProduct(name, stockInstance);
     validateExcessQuantity(quantity);
   });
 

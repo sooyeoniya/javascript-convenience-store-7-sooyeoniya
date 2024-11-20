@@ -9,6 +9,8 @@ class ProductsManagementService {
     this.#stock = stock;
     this.#promotion = promotion;
   }
+
+  
 }
 
 export default ProductsManagementService;

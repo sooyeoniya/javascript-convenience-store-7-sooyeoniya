@@ -11,6 +11,18 @@ class Stock {
     return this.#stockInfo;
   }
 
+  /**
+   * 존재하는 상품인지 확인
+   * @param {string} productName 
+   * @returns 
+   */
+  checkProductExists(productName) {
+    return this.#stockInfo.some((product) => product.name === productName);
+  }
+
+  /**
+   * 일반 재고 없는 상품에 대한 일반 재고 목록 추가
+   */
   #checkAndAddGeneralStock() {
     const productNames = Array.from(new Set(this.#stockInfo.map(({ name }) => name )));
     productNames.forEach((productName) => {
@@ -45,10 +57,21 @@ class Stock {
     return this.#stockInfo.find(({ name, promotion }) => name === productName && promotion !== null).price;
   }
 
+  /**
+   * 해당 상품에 대한 일반 재고 삽입
+   * @param {string} name 
+   * @param {number} price 
+   * @param {number} promotionStockIndex 
+   */
   #addGeneralStock(name, price, promotionStockIndex) {
     this.#stockInfo.splice(promotionStockIndex + 1, 0, { name, price, quantity: 0, promotion: null });
   }
 
+  /**
+   * 
+   * @param {string} productInfo 
+   * @returns {Array<{ name: string, price: number, quantity: number, promotion: string | null }>}
+   */
   #parseProductInfo(productInfo) {
     let [ name, price, quantity, promotion ] = productInfo.split(',');
 

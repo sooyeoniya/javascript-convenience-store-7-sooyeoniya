@@ -26,7 +26,7 @@ class Controller {
   async #validateProductsDetailsAsync() {
     try {
       const productsDetails = await InputView.readProductsDetailsAsync();
-      return validateProductsDetails(productsDetails);
+      return validateProductsDetails(productsDetails, this.#stock);
     } catch (error) {
       OutputView.printErrorMessage(error.message);
       return this.#validateProductsDetailsAsync();
