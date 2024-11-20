@@ -6,8 +6,8 @@ import validateProductsDetails from '../validations/validateProductsDetails.js';
 import ProductsManagementService from '../services/ProductsManagementService.js';
 
 class Controller {
-  #stock;
-  #promotion;
+  /** @type {Stock} */ #stock;
+  /** @type {Promotion} */ #promotion;
 
   constructor() {
     this.#stock = new Stock();
@@ -20,6 +20,8 @@ class Controller {
 
     const productManager = new ProductsManagementService(this.#stock, this.#promotion);
     const productsInfo = await this.#validateProductsDetailsAsync(productManager);
+
+    productManager.manageProducts(productsInfo);
   }
 
   /**

@@ -70,6 +70,16 @@ class Stock {
   }
 
   /**
+   * 프로모션 미적용 상품에 대해 해당 상품 구매할 수량만큼 일반 재고 수량 차감
+   * @param {string} productName 
+   * @param {number} productQuantity 
+   */
+  deductGeneralStockQuantity(productName, productQuantity) {
+    const generalStock = this.#stockInfo.find(({ name, promotion }) => name === productName && promotion === null);
+    generalStock.quantity -= productQuantity;
+  }
+
+  /**
    * 일반 재고 없는 상품에 대한 일반 재고 목록 추가
    */
   #checkAndAddGeneralStock() {
