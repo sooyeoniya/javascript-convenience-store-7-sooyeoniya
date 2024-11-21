@@ -26,7 +26,7 @@ class Stock {
    * @returns {number}
    */
   getGeneralStockQuantity(productName) {
-    return this.#stockInfo.find(({ name, promotion }) => name === productName && promotion === null).quantity;
+    return this.#getGeneralStock(productName).quantity;
   }
 
   /**
@@ -35,7 +35,7 @@ class Stock {
    * @returns {number}
    */
   getPromotionStockQuantity(productName) {
-    return this.#stockInfo.find(({ name, promotion }) => name === productName && promotion !== null).quantity;
+    return this.#getPromotionStock(productName).quantity;
   }
 
   /**
@@ -63,7 +63,7 @@ class Stock {
   /**
    * 존재하는 상품인지 확인
    * @param {string} productName 
-   * @returns 
+   * @returns {boolean}
    */
   checkProductExists(productName) {
     return this.#stockInfo.some((product) => product.name === productName);
@@ -75,7 +75,7 @@ class Stock {
    * @param {number} productQuantity 
    */
   deductGeneralStockQuantity(productName, productQuantity) {
-    const generalStock = this.#stockInfo.find(({ name, promotion }) => name === productName && promotion === null);
+    const generalStock = this.#getGeneralStock(productName);
     generalStock.quantity -= productQuantity;
   }
 
@@ -85,8 +85,8 @@ class Stock {
    * @param {number} productQuantity 
    */
   deductPromotionAndGeneralStockQuantity(productName, productQuantity) {
-    const promotionStock = this.#stockInfo.find(({ name, promotion }) => name === productName && promotion !== null);
-    const generalStock = this.#stockInfo.find(({ name, promotion }) => name === productName && promotion === null);
+    const promotionStock = this.#getPromotionStock(productName);
+    const generalStock = this.#getGeneralStock(productName);
     if (productQuantity < promotionStock.quantity) {
       promotionStock.quantity -= productQuantity;
       return;
@@ -94,6 +94,24 @@ class Stock {
     const diffPromotionStockQuantityAndProductQuantity = productQuantity - promotionStock.quantity;
     promotionStock.quantity = 0;
     generalStock.quantity -= diffPromotionStockQuantityAndProductQuantity;
+  }
+
+  /**
+   * 해당 상품에 대한 일반 재고 정보 반환
+   * @param {string} productName 
+   * @returns {{ name: string, price: number, quantity: number, promotion: string | null }}
+   */
+  #getGeneralStock(productName) {
+    return this.#stockInfo.find(({ name, promotion }) => name === productName && promotion === null);
+  }
+
+  /**
+   * 해당 상품에 대한 프로모션 재고 정보 반환
+   * @param {string} productName 
+   * @returns {{ name: string, price: number, quantity: number, promotion: string | null }}
+   */
+  #getPromotionStock(productName) {
+    return this.#stockInfo.find(({ name, promotion }) => name === productName && promotion !== null);
   }
 
   /**
@@ -130,7 +148,7 @@ class Stock {
    * @returns {number}
    */
   #getProductPrice(productName) {
-    return this.#stockInfo.find(({ name, promotion }) => name === productName && promotion !== null).price;
+    return this.#getPromotionStock(productName).price;
   }
 
   /**
