@@ -7,6 +7,10 @@ class Stock {
     this.#initStockInfo();
   }
 
+  /**
+   * 재고 전체 정보 반환
+   * @returns {Array<{ name: string, price: number, quantity: number, promotion: string | null }>}
+   */
   getStockInfo() {
     return this.#stockInfo;
   }

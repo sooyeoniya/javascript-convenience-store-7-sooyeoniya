@@ -8,8 +8,40 @@ class Promotion {
     this.#initPromotionInfo();
   }
 
-  getPromotionInfo() {
-    return this.#promotionInfo;
+  /**
+   * 해당 프로모션에 대한 정보 반환
+   * @param {string} promotionName 
+   * @returns {{ name: string, buy: number, get: number }}
+   */
+  #getPromotion(promotionName) {
+    return this.#promotionInfo.find((promotion) => promotion.name === promotionName);
+  }
+
+  /**
+   * 해당 프로모션에 대한 buy 값 반환
+   * @param {string} promotionName 
+   * @returns {number}
+   */
+  getPromotionBuy(promotionName) {
+    return this.#getPromotion(promotionName).buy;
+  }
+
+  /**
+   * 해당 프로모션에 대한 get 값 반환
+   * @param {string} promotionName 
+   * @returns {number}
+   */
+  getPromotionGet(promotionName) {
+    return this.#getPromotion(promotionName).get;
+  }
+
+  /**
+   * 해당 프로모션에 대한 buy + get 값 반환
+   * @param {string} promotionName 
+   * @returns {number}
+   */
+  getPromotionBuyPlusGet(promotionName) {
+    return this.getPromotionBuy(promotionName) + this.getPromotionGet(promotionName);
   }
 
   /**
