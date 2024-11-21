@@ -80,6 +80,23 @@ class Stock {
   }
 
   /**
+   * 프로모션 적용 상품에 대해 해당 상품 구매할 수량만큼 프로모션 재고 및 일반 재고에서 수량 차감
+   * @param {string} productName 
+   * @param {number} productQuantity 
+   */
+  deductPromotionAndGeneralStockQuantity(productName, productQuantity) {
+    const promotionStock = this.#stockInfo.find(({ name, promotion }) => name === productName && promotion !== null);
+    const generalStock = this.#stockInfo.find(({ name, promotion }) => name === productName && promotion === null);
+    if (productQuantity < promotionStock.quantity) {
+      promotionStock.quantity -= productQuantity;
+      return;
+    }
+    const diffPromotionStockQuantityAndProductQuantity = productQuantity - promotionStock.quantity;
+    promotionStock.quantity = 0;
+    generalStock.quantity -= diffPromotionStockQuantityAndProductQuantity;
+  }
+
+  /**
    * 일반 재고 없는 상품에 대한 일반 재고 목록 추가
    */
   #checkAndAddGeneralStock() {

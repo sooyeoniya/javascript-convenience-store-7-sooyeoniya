@@ -24,17 +24,23 @@ class ProductsManagementService {
     productInfo.forEach(({ name, quantity }) => {
       const isPromotionPeriod = this.#checkPromotionPeriodProduct(name);
       if (isPromotionPeriod) {
-        // 프로모션 재고 수량보다 적은 경우, 프로모션 혜택 증정 수량 추가 가능한 경우 안내 메시지 출력
-
-        // 프로모션 재고 수량과 같거나 많은 경우, 재고 부족에 대한 일부 수량 정가 결제 안내 메시지 출력
-
-        // 프로모션 재고 먼저 차감 -> 프로모션 재고 없는 경우 일반 재고 차감
-        
+        this.#checkStockQuantity(name, quantity);
+        this.#stock.deductPromotionAndGeneralStockQuantity(name, quantity);
         return;
       }
       // 프로모션 미적용 상품에 대한 일반 재고 차감
       this.#stock.deductGeneralStockQuantity(name, quantity);
     });
+  }
+
+  /**
+   * 프로모션 재고 수량보다 적은 경우, 프로모션 혜택 증정 수량 추가 가능한 경우 안내 메시지 출력
+   * 프로모션 재고 수량과 같거나 많은 경우, 재고 부족에 대한 일부 수량 정가 결제 안내 메시지 출력
+   * @param {string} name 
+   * @param {number} quantity 
+   */
+  #checkStockQuantity(name, quantity) {
+
   }
 
   /**

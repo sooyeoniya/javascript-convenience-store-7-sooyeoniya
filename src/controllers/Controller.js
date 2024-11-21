@@ -19,7 +19,7 @@ class Controller {
     OutputView.printStockInfo(this.#stock.getStockInfo());
 
     const productManager = new ProductsManagementService(this.#stock, this.#promotion);
-    const productsInfo = await this.#validateProductsDetailsAsync(productManager);
+    const productsInfo = this.#validateProductsDetailsAsync(productManager);
 
     productManager.manageProducts(productsInfo);
   }
@@ -35,7 +35,7 @@ class Controller {
       return validateProductsDetails(productsDetails, this.#stock, productManager);
     } catch (error) {
       OutputView.printErrorMessage(error.message);
-      return await this.#validateProductsDetailsAsync(productManager);
+      return this.#validateProductsDetailsAsync(productManager);
     }
   }
 }
