@@ -19,9 +19,9 @@ class Controller {
     OutputView.printStockInfo(this.#stock.getStockInfo());
 
     const productManager = new ProductsManagementService(this.#stock, this.#promotion);
-    const productsInfo = this.#validateProductsDetailsAsync(productManager);
+    const productsInfo = await this.#validateProductsDetailsAsync(productManager);
 
-    productManager.manageProducts(productsInfo);
+    await productManager.manageProducts(productsInfo);
   }
 
   /**

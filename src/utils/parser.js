@@ -31,11 +31,20 @@ const parseProductsDetails = (productsDetails) => {
   });
 }
 
+/**
+ * string을 대문자로 반환
+ * @param {string} string 
+ * @returns {string}
+ */
+const parseToUpperCase = (string) => {
+  return string.toUpperCase();
+}
+
 const parser = {
   parseThousandComma,
   parseStringToArray,
   parseProductsDetails,
-
+  parseToUpperCase,
 }
 
 export default parser;
