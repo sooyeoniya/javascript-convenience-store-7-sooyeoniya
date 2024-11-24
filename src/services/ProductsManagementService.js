@@ -5,6 +5,7 @@ import getUserConfirm from '../utils/getUserConfirm.js';
 class ProductsManagementService {
   /** @type {Stock} */ #stock;
   /** @type {Promotion} */ #promotion;
+  /** @type {Array<{ name: string, quantity: number, giftQuantity: number }>} */ #productsInfo = [];
 
   constructor(stock, promotion) {
     this.#stock = stock;
@@ -22,12 +23,13 @@ class ProductsManagementService {
    * @param {Array<{ name: string, quantity: number }>} productsInfo 
    */
   async manageProducts(productsInfo) {
-    for (const { name, quantity } of productsInfo) {
+    this.#initProductsInfo(productsInfo);
+    for (const { name, quantity } of this.#productsInfo) {
       const isPromotionPeriod = this.#checkPromotionPeriodProduct(name);
       if (isPromotionPeriod) {
         await this.#checkAndMessageStockQuantity(name, quantity);
         this.#stock.deductPromotionAndGeneralStockQuantity(name, quantity);
-        return;
+        continue;
       }
       this.#stock.deductGeneralStockQuantity(name, quantity);
     }
@@ -69,9 +71,7 @@ class ProductsManagementService {
     const isAvailableAdditionalQuantity = productQuantity % buyPlusGet === buy;
     if (isAvailableAdditionalQuantity) {
       const userConfirm = await getUserConfirm(`현재 ${productName}은(는) ${get}개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`);
-      if (userConfirm) {
-        // Y: 프로모션 혜택 증정 수량 추가
-      }
+      if (userConfirm === 'Y') this.#productsInfo.find(({ name }) => name === productName).quantity += get;
     }
   }
 
@@ -91,9 +91,7 @@ class ProductsManagementService {
     const fullPricePaymentForSomeQuantities = (promotionQuantity % buyPlusGet) + (productQuantity - promotionQuantity);
 
     const userConfirm = await getUserConfirm(`현재 ${productName} ${fullPricePaymentForSomeQuantities}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`);
-    if (!userConfirm) {
-      // N: 일부 수량 결제 취소
-    }
+    if (userConfirm === 'N') this.#productsInfo.find(({ name }) => name === productName).quantity -= fullPricePaymentForSomeQuantities;
   }
 
   /**
@@ -116,6 +114,10 @@ class ProductsManagementService {
   #checkPromotionPeriodProduct(productName) {
     const promotionName = this.#stock.getPromotionName(productName);
     return this.#promotion.hasPromotion(promotionName);
+  }
+
+  #initProductsInfo(productsInfo) {
+    this.#productsInfo = productsInfo;
   }
 }
 
