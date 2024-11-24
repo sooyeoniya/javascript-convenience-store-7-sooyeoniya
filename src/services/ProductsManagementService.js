@@ -70,7 +70,7 @@ class ProductsManagementService {
     
     const isAvailableAdditionalQuantity = productQuantity % buyPlusGet === buy;
     if (isAvailableAdditionalQuantity) {
-      const userConfirm = await getUserConfirm(`현재 ${productName}은(는) ${get}개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`);
+      const userConfirm = await getUserConfirm(`\n현재 ${productName}은(는) ${get}개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`);
       if (userConfirm === 'Y') this.#productsInfo.find(({ name }) => name === productName).quantity += get;
     }
   }
@@ -90,7 +90,7 @@ class ProductsManagementService {
     const buyPlusGet = this.#promotion.getPromotionBuyPlusGet(promotionName);
     const fullPricePaymentForSomeQuantities = (promotionQuantity % buyPlusGet) + (productQuantity - promotionQuantity);
 
-    const userConfirm = await getUserConfirm(`현재 ${productName} ${fullPricePaymentForSomeQuantities}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`);
+    const userConfirm = await getUserConfirm(`\n현재 ${productName} ${fullPricePaymentForSomeQuantities}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`);
     if (userConfirm === 'N') this.#productsInfo.find(({ name }) => name === productName).quantity -= fullPricePaymentForSomeQuantities;
   }
 

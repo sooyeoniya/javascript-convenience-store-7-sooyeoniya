@@ -4,6 +4,7 @@ import InputView from '../views/InputView.js';
 import OutputView from '../views/OutputView.js';
 import validateProductsDetails from '../validations/validateProductsDetails.js';
 import ProductsManagementService from '../services/ProductsManagementService.js';
+import getUserConfirm from '../utils/getUserConfirm.js';
 
 class Controller {
   /** @type {Stock} */ #stock;
@@ -15,6 +16,13 @@ class Controller {
   }
 
   async start() {
+    await this.#paymentSystem();
+
+    const userConfirm = await getUserConfirm(`\n감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)\n`);
+    if (userConfirm === 'Y') await this.start();
+  }
+
+  async #paymentSystem() {
     OutputView.printWelcomeGreeting();
     OutputView.printStockInfo(this.#stock.getStockInfo());
 
