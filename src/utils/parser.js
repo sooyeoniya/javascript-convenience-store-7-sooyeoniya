@@ -1,4 +1,3 @@
-
 /**
  * 숫자에 천 단위 콤마를 붙여 반환한다.
  * @param {number} number 
@@ -40,11 +39,22 @@ const parseToUpperCase = (string) => {
   return string.toUpperCase();
 }
 
+/**
+ * 문자열 길이가 4 이상인 경우 tab 한 개, 4 미만인 경우 tab 두 개를 접미사에 붙여서 반환
+ * @param {string} string 
+ * @returns {string}
+ */
+const adjustTabsByLetterLength = (string) => {
+  if (string.length < 4) return `${string}\t\t`;
+  return `${string}\t`;
+}
+
 const parser = {
   parseThousandComma,
   parseStringToArray,
   parseProductsDetails,
   parseToUpperCase,
+  adjustTabsByLetterLength,
 }
 
 export default parser;
