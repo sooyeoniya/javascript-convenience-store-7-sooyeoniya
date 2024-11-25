@@ -1,4 +1,3 @@
-import Stock from '../src/domains/Stock.js';
 import Promotion from '../src/domains/Promotion.js';
 import ReceiptService from '../src/services/ReceiptService.js';
 import getUserConfirm from '../src/utils/getUserConfirm.js';

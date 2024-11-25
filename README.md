@@ -78,12 +78,11 @@
   - [x] 통합 테스트
     - 기능 및 예외 테스트
 
-  - [ ] 단위 테스트
+  - [x] 단위 테스트
     - [x] `Stock` 클래스 테스트
     - [x] `Promotion` 클래스 테스트
-    - [ ] `ProductsManagementService` 클래스 테스트
+    - [x] `ProductsManagementService` 클래스 테스트
     - [x] `ReceiptService` 클래스 테스트
-    - [ ] `Controller` 클래스 테스트
 
 ### 기타
 
