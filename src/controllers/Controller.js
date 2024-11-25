@@ -5,6 +5,7 @@ import OutputView from '../views/OutputView.js';
 import validateProductsDetails from '../validations/validateProductsDetails.js';
 import ProductsManagementService from '../services/ProductsManagementService.js';
 import getUserConfirm from '../utils/getUserConfirm.js';
+import ReceiptService from '../services/ReceiptService.js';
 
 class Controller {
   /** @type {Stock} */ #stock;
@@ -30,6 +31,9 @@ class Controller {
     const productsInfo = await this.#validateProductsDetailsAsync(productManager);
 
     await productManager.manageProducts(productsInfo);
+    const receiptService = new ReceiptService(productManager.getProductsInfo(), this.#stock, this.#promotion);
+    await receiptService.calculateReceipt();
+    OutputView.printReceipt(receiptService.getReceiptInfo());
   }
 
   /**

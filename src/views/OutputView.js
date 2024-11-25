@@ -26,7 +26,24 @@ const OutputView = {
 
   printErrorMessage(errorMessage) {
     Console.print(errorMessage);
-  }
+  },
+
+  printReceipt(receiptInfo) {
+    Console.print('\n===========W\t편의점=============');
+    Console.print('상품명\t\t수량\t\t금액');
+    receiptInfo.productsInfo.forEach((product) => {
+      Console.print(`${product.name}\t\t${product.quantity}\t\t${product.totalPrice}`);
+    });
+    Console.print('===========증\t정=============');
+    receiptInfo.productsInfo.forEach((product) => {
+      Console.print(`${product.name}\t\t${product.giftQuantity}`);
+    });
+    Console.print('==============================');
+    Console.print(`총구매액\t${receiptInfo.totalQuantity}\t${receiptInfo.totalProductsAmount}`);
+    Console.print(`행사할인\t-${receiptInfo.promotionDiscount}`);
+    Console.print(`멤버십할인\t-${receiptInfo.membershipDiscount}`);
+    Console.print(`내실돈\t${receiptInfo.totalPaymentAmount}`);
+  },
 }
 
 export default OutputView;
