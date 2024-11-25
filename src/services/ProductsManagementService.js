@@ -12,6 +12,10 @@ class ProductsManagementService {
     this.#promotion = promotion;
   }
 
+  getProductsInfo() {
+    return this.#productsInfo;
+  }
+
   /**
    * [사용자가 구매할 상품에 대한 관리 서비스]
    * 1) 프로모션 적용 가능 상품인 경우
@@ -27,11 +31,12 @@ class ProductsManagementService {
     for (const productInfo of this.#productsInfo) {
       const isPromotionPeriod = this.#checkPromotionPeriodProduct(productInfo.name);
       if (isPromotionPeriod) {
-        await this.#checkAndMessageStockQuantity(productInfo.name, productInfo.quantity);
+        await this.#checkAndMessageStockQuantity(productInfo);
         this.#stock.deductPromotionAndGeneralStockQuantity(productInfo.name, productInfo.quantity);
         continue;
       }
       this.#stock.deductGeneralStockQuantity(productInfo.name, productInfo.quantity);
+      this.#initGiftQuantity(productInfo.name);
     }
   }
 
@@ -40,13 +45,15 @@ class ProductsManagementService {
    * @param {string} productName 
    * @param {number} productQuantity 
    */
-  async #checkAndMessageStockQuantity(productName, productQuantity) {
-    const promotionQuantity = this.#stock.getPromotionStockQuantity(productName);
-    if (productQuantity < promotionQuantity) {
-      await this.#messageAdditionalQuantity(productName, productQuantity);
+  async #checkAndMessageStockQuantity(productInfo) {
+    const promotionQuantity = this.#stock.getPromotionStockQuantity(productInfo.name);
+    if (productInfo.quantity < promotionQuantity) {
+      await this.#messageAdditionalQuantity(productInfo.name, productInfo.quantity);
+      this.#setGiftQuantity(productInfo.name, productInfo.quantity);
       return;
     }
-    await this.#messageFullPricePaymentForSomeQuantities(productName, productQuantity, promotionQuantity);
+    await this.#messageFullPricePaymentForSomeQuantities(productInfo.name, productInfo.quantity, promotionQuantity);
+    this.#setGiftQuantity(productInfo.name, promotionQuantity);
   }
 
   /**
@@ -92,6 +99,25 @@ class ProductsManagementService {
 
     const userConfirm = await getUserConfirm(`\n현재 ${productName} ${fullPricePaymentForSomeQuantities}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`);
     if (userConfirm === 'N') this.#productsInfo.find(({ name }) => name === productName).quantity -= fullPricePaymentForSomeQuantities;
+  }
+
+  /**
+   * 해당 상품에 대한 증정품 수량 초기화
+   * @param {string} productName 
+   */
+  #initGiftQuantity(productName) {
+    this.#productsInfo.find(({ name }) => name === productName).giftQuantity = 0;
+  }
+
+  /**
+   * 해당 상품에 대한 증정품 수량 계산
+   * @param {string} productName 
+   * @param {number} dividedQuantity 
+   */
+  #setGiftQuantity(productName, dividedQuantity) {
+    const promotionName = this.#stock.getPromotionName(productName);
+    const buyPlusGet = this.#promotion.getPromotionBuyPlusGet(promotionName);
+    this.#productsInfo.find(({ name }) => name === productName).giftQuantity = Math.floor(dividedQuantity / buyPlusGet);
   }
 
   /**
