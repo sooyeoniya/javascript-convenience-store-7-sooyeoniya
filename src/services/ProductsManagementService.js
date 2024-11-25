@@ -24,14 +24,14 @@ class ProductsManagementService {
    */
   async manageProducts(productsInfo) {
     this.#initProductsInfo(productsInfo);
-    for (const { name, quantity } of this.#productsInfo) {
-      const isPromotionPeriod = this.#checkPromotionPeriodProduct(name);
+    for (const productInfo of this.#productsInfo) {
+      const isPromotionPeriod = this.#checkPromotionPeriodProduct(productInfo.name);
       if (isPromotionPeriod) {
-        await this.#checkAndMessageStockQuantity(name, quantity);
-        this.#stock.deductPromotionAndGeneralStockQuantity(name, quantity);
+        await this.#checkAndMessageStockQuantity(productInfo.name, productInfo.quantity);
+        this.#stock.deductPromotionAndGeneralStockQuantity(productInfo.name, productInfo.quantity);
         continue;
       }
-      this.#stock.deductGeneralStockQuantity(name, quantity);
+      this.#stock.deductGeneralStockQuantity(productInfo.name, productInfo.quantity);
     }
   }
 
