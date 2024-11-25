@@ -6,15 +6,15 @@ class ReceiptService {
   /** @type {Stock} */ #stock;
   /** @type {Promotion} */ #promotion;
   /**
-  * @type {{ 
-  *  productsInfo: Array<{ name: string, quantity: number, giftQuantity: number, totalPrice: number }>,
-  *  totalQuantity: number,
-  *  totalProductsAmount: number, 
-  *  promotionDiscount: number,
-  *  membershipDiscount: number,
-  *  totalPaymentAmount: number,
-  *  }}
-  */
+   * @type {{ 
+   *  productsInfo: Array<{ name: string, quantity: number, giftQuantity: number, totalPrice: number }>,
+   *  totalQuantity: number,
+   *  totalProductsAmount: number, 
+   *  promotionDiscount: number,
+   *  membershipDiscount: number,
+   *  totalPaymentAmount: number,
+   *  }}
+   */
   #receiptInfo = [];
 
   constructor(productsInfo, stock, promotion) {

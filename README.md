@@ -75,10 +75,14 @@
 
 ### 테스트 코드
 
-  - [ ] 통합 테스트
+  - [x] 통합 테스트
     - 기능 및 예외 테스트
 
   - [ ] 단위 테스트
+    - [ ] Stock 클래스 테스트
+    - [ ] Promotion 클래스 테스트
+    - [ ] ProductsManagementService 클래스 테스트
+    - [ ] ReceiptService 클래스 테스트
 
 ### 기타
 
