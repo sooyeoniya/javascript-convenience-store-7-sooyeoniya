@@ -1,3 +1,4 @@
+import { ERROR_MESSAGES } from '../constants/constants.js';
 import Stock from '../domains/Stock.js';
 import ProductsManagementService from '../services/ProductsManagementService.js';
 import parser from '../utils/parser.js';
@@ -10,7 +11,7 @@ const validateInputForm = (productsDetails) => {
   const regex = /^\[([^\[\]\-]+)-(\d+)\]$/;
   productsDetails.forEach((productInfo) => {
     if (!regex.test(productInfo)) {
-      throw new Error('[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.');
+      throw new Error(ERROR_MESSAGES.INVALID_FORMAT);
     }
   });
 }
@@ -22,7 +23,7 @@ const validateInputForm = (productsDetails) => {
  */
 const validateExistProduct = (name, stockInstance) => {
   if (!stockInstance.checkProductExists(name)) {
-    throw new Error('[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.');
+    throw new Error(ERROR_MESSAGES.NON_EXISTENT);
   }
 }
 
@@ -34,7 +35,7 @@ const validateExistProduct = (name, stockInstance) => {
  */
 const validateExcessQuantity = (name, quantity, productManager) => {
   if (productManager.checkExcessQuantity(name, quantity)) {
-    throw new Error('[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.');
+    throw new Error(ERROR_MESSAGES.EXCEEDED_QUANTITY);
   }
 }
 

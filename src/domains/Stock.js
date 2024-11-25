@@ -1,3 +1,4 @@
+import { FILE_PATH, NULL, SPLIT } from '../constants/constants.js';
 import getFileData from '../utils/getFileData.js';
 
 class Stock {
@@ -180,17 +181,17 @@ class Stock {
    * @returns {Array<{ name: string, price: number, quantity: number, promotion: string | null }>}
    */
   #parseProductInfo(productInfo) {
-    let [ name, price, quantity, promotion ] = productInfo.split(',');
+    let [ name, price, quantity, promotion ] = productInfo.split(SPLIT.COMMA);
 
     price = Number(price);
     quantity = Number(quantity);
-    if (promotion === 'null') promotion = null;
+    if (promotion === NULL) promotion = null;
 
     return { name, price, quantity, promotion };
   }
 
   #initStockInfo() {
-    const stockInfo = getFileData('public/products.md');
+    const stockInfo = getFileData(FILE_PATH.PRODUCTS);
 
     stockInfo.forEach((productInfo) => {
       const parsedProductInfo = this.#parseProductInfo(productInfo);

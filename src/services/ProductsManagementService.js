@@ -1,6 +1,7 @@
 import Stock from '../domains/Stock.js';
 import Promotion from '../domains/Promotion.js';
 import getUserConfirm from '../utils/getUserConfirm.js';
+import { USER_ANSWER, PROMPT_MESSAGES } from '../constants/constants.js';
 
 class ProductsManagementService {
   /** @type {Stock} */ #stock;
@@ -77,8 +78,8 @@ class ProductsManagementService {
     
     const isAvailableAdditionalQuantity = productQuantity % buyPlusGet === buy;
     if (isAvailableAdditionalQuantity) {
-      const userConfirm = await getUserConfirm(`\n현재 ${productName}은(는) ${get}개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`);
-      if (userConfirm === 'Y') this.#productsInfo.find(({ name }) => name === productName).quantity += get;
+      const userConfirm = await getUserConfirm(PROMPT_MESSAGES.ADDITIONAL_QUANTITY(productName, get));
+      if (userConfirm === USER_ANSWER.YES) this.#productsInfo.find(({ name }) => name === productName).quantity += get;
     }
   }
 
@@ -97,8 +98,8 @@ class ProductsManagementService {
     const buyPlusGet = this.#promotion.getPromotionBuyPlusGet(promotionName);
     const fullPricePaymentForSomeQuantities = (promotionQuantity % buyPlusGet) + (productQuantity - promotionQuantity);
 
-    const userConfirm = await getUserConfirm(`\n현재 ${productName} ${fullPricePaymentForSomeQuantities}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`);
-    if (userConfirm === 'N') this.#productsInfo.find(({ name }) => name === productName).quantity -= fullPricePaymentForSomeQuantities;
+    const userConfirm = await getUserConfirm(PROMPT_MESSAGES.FULL_PRICE(productName, fullPricePaymentForSomeQuantities));
+    if (userConfirm === USER_ANSWER.NO) this.#productsInfo.find(({ name }) => name === productName).quantity -= fullPricePaymentForSomeQuantities;
   }
 
   /**

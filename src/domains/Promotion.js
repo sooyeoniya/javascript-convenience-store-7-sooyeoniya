@@ -1,5 +1,6 @@
 import { DateTimes } from '@woowacourse/mission-utils';
 import getFileData from '../utils/getFileData.js';
+import { FILE_PATH, SPLIT } from '../constants/constants.js';
 
 class Promotion {
   /** @type {Array<{ name: string, buy: number, get: number }>} */ #promotionInfo = [];
@@ -59,7 +60,7 @@ class Promotion {
   }
 
   #parsePromotionInfo(promotionInfo) {
-    let [ name, buy, get, startDate, endDate ] = promotionInfo.split(',');
+    let [ name, buy, get, startDate, endDate ] = promotionInfo.split(SPLIT.COMMA);
     
     buy = Number(buy);
     get = Number(get);
@@ -73,7 +74,7 @@ class Promotion {
   }
 
   #initPromotionInfo() {
-    const promotionsInfo = getFileData('public/promotions.md');
+    const promotionsInfo = getFileData(FILE_PATH.PROMOTIONS);
 
     promotionsInfo.forEach((promotionInfo) => {
       const parsedPromotionInfo = this.#parsePromotionInfo(promotionInfo);

@@ -1,6 +1,7 @@
 import Stock from '../domains/Stock.js';
 import Promotion from '../domains/Promotion.js';
 import getUserConfirm from '../utils/getUserConfirm.js';
+import { PROMPT_MESSAGES, USER_ANSWER, MEMBERSHIP_CALCULATION, ZERO } from '../constants/constants.js';
 
 class ReceiptService {
   /** @type {Stock} */ #stock;
@@ -51,18 +52,18 @@ class ReceiptService {
   }
 
   async #setMembershipDiscount() {
-    const userConfirm = await getUserConfirm('\n멤버십 할인을 받으시겠습니까? (Y/N)\n');
-    if (userConfirm === 'Y') {
+    const userConfirm = await getUserConfirm(PROMPT_MESSAGES.MEMBERSHIP_DISCOUNT);
+    if (userConfirm === USER_ANSWER.YES) {
       const promotionAmount = this.#getPromotionAmount();
       const membershipAmount = this.#receiptInfo.totalProductsAmount - promotionAmount;
-      this.#receiptInfo.membershipDiscount = Math.min(membershipAmount * 0.3, 8_000);
+      this.#receiptInfo.membershipDiscount = Math.min(membershipAmount * MEMBERSHIP_CALCULATION.RATE, MEMBERSHIP_CALCULATION.MAX_NUM);
     }
   }
   
   #getPromotionAmount() {
     let promotionAmount = 0;
     this.#receiptInfo.productsInfo.forEach(({ name, giftQuantity }) => {
-      if (giftQuantity <= 0) return;
+      if (giftQuantity <= ZERO) return;
       const productPrice = this.#stock.getProductPrice(name);
       const promotionName = this.#stock.getPromotionName(name);
       const buyPlusGet = this.#promotion.getPromotionBuyPlusGet(promotionName);

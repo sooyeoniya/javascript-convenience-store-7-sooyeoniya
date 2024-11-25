@@ -1,3 +1,5 @@
+import { SPLIT } from '../constants/constants.js';
+
 /**
  * 숫자에 천 단위 콤마를 붙여 반환한다.
  * @param {number} number 
@@ -13,7 +15,7 @@ const parseThousandComma = (number) => {
  * @returns {Array<string>}
  */
 const parseStringToArray = (string) => {
-  return string.split(',').map((item) => item.trim());
+  return string.split(SPLIT.COMMA).map((item) => item.trim());
 }
 
 /**
@@ -23,8 +25,13 @@ const parseStringToArray = (string) => {
  * @returns {Array<{ name: string, quantity: number }>}
  */
 const parseProductsDetails = (productsDetails) => {
+  const PREFIX_BRACEKET_INDEX = 1;  // '['
+  const SUFFIX_BRACEKET_INDEX = -1; // ']'
   return productsDetails.map((productDetails) => {
-    const productInfo = productDetails.slice(1, -1).split('-').map((item) => item.trim());
+    const productInfo = productDetails
+      .slice(PREFIX_BRACEKET_INDEX, SUFFIX_BRACEKET_INDEX)
+      .split(SPLIT.DASH)
+      .map((item) => item.trim());
 
     return { name: productInfo[0], quantity: Number(productInfo[1]) };
   });
@@ -45,7 +52,8 @@ const parseToUpperCase = (string) => {
  * @returns {string}
  */
 const adjustTabsByLetterLength = (string) => {
-  if (string.length < 4) return `${string}\t\t`;
+  const CRITERIA_NUM = 4;
+  if (string.length < CRITERIA_NUM) return `${string}\t\t`;
   return `${string}\t`;
 }
 

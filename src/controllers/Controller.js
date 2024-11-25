@@ -6,6 +6,7 @@ import validateProductsDetails from '../validations/validateProductsDetails.js';
 import ProductsManagementService from '../services/ProductsManagementService.js';
 import getUserConfirm from '../utils/getUserConfirm.js';
 import ReceiptService from '../services/ReceiptService.js';
+import { PROMPT_MESSAGES, USER_ANSWER } from '../constants/constants.js';
 
 class Controller {
   /** @type {Stock} */ #stock;
@@ -19,8 +20,8 @@ class Controller {
   async start() {
     await this.#paymentSystem();
 
-    const userConfirm = await getUserConfirm(`\n감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)\n`);
-    if (userConfirm === 'Y') await this.start();
+    const userConfirm = await getUserConfirm(PROMPT_MESSAGES.ADDITIONAL_PURCHASE);
+    if (userConfirm === USER_ANSWER.YES) await this.start();
   }
 
   async #paymentSystem() {

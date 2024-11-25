@@ -1,9 +1,10 @@
 import { Console } from '@woowacourse/mission-utils';
 import parser from '../utils/parser.js';
+import { PROMPT_MESSAGES, ZERO, NO_STOCK } from '../constants/constants.js';
 
 const OutputView = {
   printWelcomeGreeting() {
-    Console.print('\n안녕하세요. W편의점입니다.\n현재 보유하고 있는 상품입니다.\n');
+    Console.print(PROMPT_MESSAGES.WELCOME_GREETING);
   },
 
   /**
@@ -15,7 +16,7 @@ const OutputView = {
       const price = parser.parseThousandComma(productInfo.price);
       
       let quantity = `${productInfo.quantity}개`;
-      if (productInfo.quantity === 0) quantity = '재고 없음';
+      if (productInfo.quantity === ZERO) quantity = NO_STOCK;
 
       let promotion = productInfo.promotion;
       if (productInfo.promotion === null) promotion = '';
@@ -37,7 +38,7 @@ const OutputView = {
 
     Console.print('===============증 정=================');
     receiptInfo.productsInfo
-    .filter((product) => product.giftQuantity > 0)
+    .filter((product) => product.giftQuantity > ZERO)
     .forEach((product) => {
       Console.print(`${parser.adjustTabsByLetterLength(product.name)}${product.giftQuantity}`);
     });
