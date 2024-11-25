@@ -40,7 +40,7 @@ class Stock {
    * @returns {number}
    */
   getPromotionStockQuantity(productName) {
-    return this.#getPromotionStock(productName).quantity;
+    return this.#getPromotionStock(productName)?.quantity;
   }
 
   /**

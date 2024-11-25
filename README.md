@@ -79,20 +79,54 @@
     - 기능 및 예외 테스트
 
   - [ ] 단위 테스트
-    - [ ] Stock 클래스 테스트
-    - [ ] Promotion 클래스 테스트
-    - [ ] ProductsManagementService 클래스 테스트
-    - [ ] ReceiptService 클래스 테스트
+    - [x] `Stock` 클래스 테스트
+    - [ ] `Promotion` 클래스 테스트
+    - [ ] `ProductsManagementService` 클래스 테스트
+    - [ ] `ReceiptService` 클래스 테스트
 
 ### 기타
 
   - [x] JSDoc 주석 처리
   - [x] 상수화
   - [x] 리팩토링
-    - 함수 길이 10 제한
-    - indent depth 2 제한
+    - 함수 길이 `10` 제한
+    - indent depth `2` 제한
     - 공통 로직 분리
 
 ## 🏛️ 프로젝트 구조
 ```
+__tests__
+├── ApplicationTest.js
+├── ProductsManagementServiceTest.js
+├── ReceiptServiceTest.js
+├── PromotionTest.js
+└── StockTest.js
+
+public
+├── products.md
+└── promotions.md
+
+src
+├── App.js
+├── index.js
+├── constants
+│   └── constants.js
+├── controller
+│   └── Controller.js
+├── domain
+│   ├── Promotion.js
+│   └── Stock.js
+├── service
+│   ├── ProductsManagementService.js
+│   └── ReceiptService.js
+├── utils
+│   ├── getFileData.js
+│   ├── getUserConfirm.js
+│   └── parser.js
+├── validations
+│   ├── validateProductsDetails.js
+│   └── validateUserConfirm.js
+└── view
+    ├── InputView.js
+    └── OutputView.js
 ```
