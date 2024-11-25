@@ -29,9 +29,9 @@ const parseProductsDetails = (productsDetails) => {
   const SUFFIX_BRACEKET_INDEX = -1; // ']'
   return productsDetails.map((productDetails) => {
     const productInfo = productDetails
-      .slice(PREFIX_BRACEKET_INDEX, SUFFIX_BRACEKET_INDEX)
-      .split(SPLIT.DASH)
-      .map((item) => item.trim());
+    .slice(PREFIX_BRACEKET_INDEX, SUFFIX_BRACEKET_INDEX)
+    .split(SPLIT.DASH)
+    .map((item) => item.trim());
 
     return { name: productInfo[0], quantity: Number(productInfo[1]) };
   });

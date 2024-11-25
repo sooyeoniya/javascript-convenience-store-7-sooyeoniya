@@ -19,6 +19,18 @@ class ProductsManagementService {
 
   /**
    * [사용자가 구매할 상품에 대한 관리 서비스]
+   * 1) 구매할 상품 정보 받아서 저장
+   * 2) 구매할 상품을 하나씩 순회하며 상품 점검 및 재고 차감 로직 실행
+   * @param {Array<{ name: string, quantity: number }>} productsInfo 
+   */
+  async manageProducts(productsInfo) {
+    this.#initProductsInfo(productsInfo);
+    for (const productInfo of this.#productsInfo) {
+      await this.#processProductStock(productInfo);
+    }
+  }
+
+  /**
    * 1) 프로모션 적용 가능 상품인 경우
    *  - 프로모션 재고 수량보다 적은 경우: 프로모션 혜택 증정 수량 추가 가능한 경우 안내 메시지 출력
    *  - 프로모션 재고 수량과 같거나 많은 경우: 재고 부족에 대한 일부 수량 정가 결제 안내 메시지 출력
@@ -27,18 +39,15 @@ class ProductsManagementService {
    *  - 일반 재고 차감
    * @param {Array<{ name: string, quantity: number }>} productsInfo 
    */
-  async manageProducts(productsInfo) {
-    this.#initProductsInfo(productsInfo);
-    for (const productInfo of this.#productsInfo) {
-      const isPromotionPeriod = this.#checkPromotionPeriodProduct(productInfo.name);
-      if (isPromotionPeriod) {
-        await this.#checkAndMessageStockQuantity(productInfo);
-        this.#stock.deductPromotionAndGeneralStockQuantity(productInfo.name, productInfo.quantity);
-        continue;
-      }
-      this.#stock.deductGeneralStockQuantity(productInfo.name, productInfo.quantity);
-      this.#initGiftQuantity(productInfo.name);
+  async #processProductStock(productInfo) {
+    const isPromotionPeriod = this.#checkPromotionPeriodProduct(productInfo.name);
+    if (isPromotionPeriod) {
+      await this.#checkAndMessageStockQuantity(productInfo);
+      this.#stock.deductPromotionAndGeneralStockQuantity(productInfo.name, productInfo.quantity);
+      return;
     }
+    this.#stock.deductGeneralStockQuantity(productInfo.name, productInfo.quantity);
+    this.#initGiftQuantity(productInfo.name);
   }
 
   /**

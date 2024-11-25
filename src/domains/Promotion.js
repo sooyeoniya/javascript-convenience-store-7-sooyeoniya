@@ -68,9 +68,7 @@ class Promotion {
     startDate = new Date(startDate);
     endDate = new Date(endDate);
 
-    if (this.#checkPromotionPeriod(startDate, endDate)) {
-      return { name, buy, get };
-    }
+    if (this.#checkPromotionPeriod(startDate, endDate)) return { name, buy, get };
   }
 
   #initPromotionInfo() {
