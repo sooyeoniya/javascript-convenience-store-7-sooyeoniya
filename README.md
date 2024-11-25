@@ -80,7 +80,7 @@
 
   - [ ] 단위 테스트
     - [x] `Stock` 클래스 테스트
-    - [ ] `Promotion` 클래스 테스트
+    - [x] `Promotion` 클래스 테스트
     - [ ] `ProductsManagementService` 클래스 테스트
     - [ ] `ReceiptService` 클래스 테스트
 
@@ -122,6 +122,7 @@ src
 ├── utils
 │   ├── getFileData.js
 │   ├── getUserConfirm.js
+│   ├── mockNowDate.js
 │   └── parser.js
 ├── validations
 │   ├── validateProductsDetails.js
